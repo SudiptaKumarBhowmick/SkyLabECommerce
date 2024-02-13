@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Data.DTOs;
+using Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +13,10 @@ namespace Service.Helpers
     {
         public AutoMapperProfiles()
         {
-            
+            CreateMap<Order, OrderDto>().ReverseMap().ForMember(x => x.Id, opt => opt.Ignore());
+            CreateMap<ProductSubCategory, ProductSubCategoryDto>().ReverseMap().ForMember(x => x.Id, opt => opt.Ignore());
+            CreateMap<AdminUser, AdminUserDto>().ReverseMap().ForMember(x => x.Id, opt => opt.Ignore());
+            CreateMap<Product, ProductDto>().ReverseMap().ForMember(x => x.Id, opt => opt.Ignore());
         }
     }
 }
