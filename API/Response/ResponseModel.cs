@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace API.Response
 {
-    public class ResponseModel
+    public class ResponseModel : IResponseModel
     {
-        public string Message { get; set; } = ""; 
+        public string Message { get; set; } = "";
     }
 
     public interface IResponseModel

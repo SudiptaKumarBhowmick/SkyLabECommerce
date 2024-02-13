@@ -86,7 +86,9 @@ namespace API.Controllers
             var adminUser = await _unitOfWork.AdminUserRepository.GetByIdAsync(id);
             if (adminUser == null)
             {
-                return BadRequest("Admin user not found");
+                var errorResponse = new ResponseModel();
+                errorResponse.Message = "Admin user not found";
+                return errorResponse.ToHttpErrorResponse();
             }
 
             _unitOfWork.AdminUserRepository.Delete(adminUser);

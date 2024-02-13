@@ -74,7 +74,9 @@ namespace API.Controllers
             var productCategory = await _unitOfWork.ProductCategoryRepository.GetByIdAsync(id);
             if (productCategory == null)
             {
-                return BadRequest("Product category not found");
+                var errorResponse = new ResponseModel();
+                errorResponse.Message = "Product category not found";
+                return errorResponse.ToHttpErrorResponse();
             }
 
             _unitOfWork.ProductCategoryRepository.Delete(productCategory);

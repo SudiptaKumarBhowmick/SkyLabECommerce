@@ -88,5 +88,15 @@ namespace API.Response
                 StatusCode = (int)status
             };
         }
+
+        public static IActionResult ToHttpErrorResponse(this IResponseModel response)
+        {
+            var status = HttpStatusCode.BadRequest;
+
+            return new ObjectResult(response)
+            {
+                StatusCode = (int)status
+            };
+        }
     }
 }

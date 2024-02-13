@@ -86,7 +86,9 @@ namespace API.Controllers
             var product = await _unitOfWork.ProductRepository.GetByIdAsync(id);
             if (product == null)
             {
-                return BadRequest("Product not found");
+                var errorResponse = new ResponseModel();
+                errorResponse.Message = "Product not found";
+                return errorResponse.ToHttpErrorResponse();
             }
 
             _unitOfWork.ProductRepository.Delete(product);

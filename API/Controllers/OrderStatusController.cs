@@ -74,7 +74,9 @@ namespace API.Controllers
             var orderStatus = await _unitOfWork.OrderStatusRepository.GetByIdAsync(id);
             if (orderStatus == null)
             {
-                return BadRequest("Order status not found");
+                var errorResponse = new ResponseModel();
+                errorResponse.Message = "Order status not found";
+                return errorResponse.ToHttpErrorResponse();
             }
 
             _unitOfWork.OrderStatusRepository.Delete(orderStatus);

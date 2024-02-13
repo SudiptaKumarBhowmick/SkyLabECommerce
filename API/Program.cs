@@ -1,6 +1,7 @@
 using Data;
 using Microsoft.EntityFrameworkCore;
 using Service.Extensions;
+using Service.Middleware;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -23,6 +24,8 @@ if (app.Environment.IsDevelopment())
 }
 
 // Configure the HTTP request pipeline.
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 

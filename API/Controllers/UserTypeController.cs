@@ -74,7 +74,9 @@ namespace API.Controllers
             var userType = await _unitOfWork.UserTypeRepository.GetByIdAsync(id);
             if (userType == null)
             {
-                return BadRequest("User type not found");
+                var errorResponse = new ResponseModel();
+                errorResponse.Message = "User type not found";
+                return errorResponse.ToHttpErrorResponse();
             }
 
             _unitOfWork.UserTypeRepository.Delete(userType);
