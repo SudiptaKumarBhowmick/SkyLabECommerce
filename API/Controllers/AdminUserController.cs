@@ -43,11 +43,6 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddAdminUser([FromBody] AdminUserDto adminUserDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
             var adminUserEntity = _mapper.Map<AdminUser>(adminUserDto);
 
             await _unitOfWork.AdminUserRepository.AddAsync(adminUserEntity);
@@ -61,15 +56,6 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateAdminUser(int id, [FromBody] AdminUserDto adminUserDto)
         {
-            if (id.Equals(0))
-            {
-                return BadRequest("Invalid request!");
-            }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
             var adminUserEntity = _mapper.Map<AdminUser>(adminUserDto);
 
             _unitOfWork.AdminUserRepository.Update(id, adminUserEntity);

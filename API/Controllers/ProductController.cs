@@ -43,11 +43,6 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProduct([FromBody] ProductDto productDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
             var productEntity = _mapper.Map<Product>(productDto);
 
             await _unitOfWork.ProductRepository.AddAsync(productEntity);
@@ -61,15 +56,6 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateProduct(int id, [FromBody] ProductDto productDto)
         {
-            if (id.Equals(0))
-            {
-                return BadRequest("Invalid request!");
-            }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
             var productEntity = _mapper.Map<Product>(productDto);
 
             _unitOfWork.ProductRepository.Update(id, productEntity);

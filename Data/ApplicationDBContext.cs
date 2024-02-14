@@ -35,4 +35,22 @@ public class ApplicationDBContext : DbContext
 
         return base.SaveChanges();
     }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.AddInterceptors();
+    }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<AdminUser>().HasQueryFilter(x => x.IsDeleted == false);
+        modelBuilder.Entity<User>().HasQueryFilter(x => x.IsDeleted == false);
+        modelBuilder.Entity<UserType>().HasQueryFilter(x => x.IsDeleted == false);
+        modelBuilder.Entity<Order>().HasQueryFilter(x => x.IsDeleted == false);
+        modelBuilder.Entity<OrderStatus>().HasQueryFilter(x => x.IsDeleted == false);
+        modelBuilder.Entity<Product>().HasQueryFilter(x => x.IsDeleted == false);
+        modelBuilder.Entity<ProductImage>().HasQueryFilter(x => x.IsDeleted == false);
+        modelBuilder.Entity<ProductCategory>().HasQueryFilter(x => x.IsDeleted == false);
+        modelBuilder.Entity<ProductSubCategory>().HasQueryFilter(x => x.IsDeleted == false);
+    }
 }

@@ -43,12 +43,7 @@ namespace API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddProductSubCategory([FromBody] ProductSubCategoryDto productSubCategoryDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
-            var productSubCategoryEntity = _mapper.Map<ProductSubCategory>(productSubCategoryDto);
+            var productSubCategoryEntity = _mapper.Map<ProductSubCategoryDto, ProductSubCategory>(productSubCategoryDto);
 
             await _unitOfWork.ProductSubCategoryRepository.AddAsync(productSubCategoryEntity);
 
@@ -61,15 +56,6 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public IActionResult UpdateProductSubCategory(int id, [FromBody] ProductSubCategoryDto productSubCategoryDto)
         {
-            if (id.Equals(0))
-            {
-                return BadRequest("Invalid request!");
-            }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-
             var productSubCategoryEntity = _mapper.Map<ProductSubCategory>(productSubCategoryDto);
 
             _unitOfWork.ProductSubCategoryRepository.Update(id, productSubCategoryEntity);

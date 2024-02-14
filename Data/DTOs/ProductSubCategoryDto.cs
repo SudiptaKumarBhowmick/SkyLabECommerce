@@ -10,7 +10,10 @@ namespace Data.DTOs
     public class ProductSubCategoryDto
     {
         public int Id { get; set; }
+        [Required(ErrorMessage = "Sub category name is required!!")]
+        [MaxLength(250, ErrorMessage = "Sub category name is too long")]
         public required string SubCategoryName { get; set; }
+        [Required(ErrorMessage = "Category is required!!")]
         public int ProductCategoryId { get; set; }
     }
 }

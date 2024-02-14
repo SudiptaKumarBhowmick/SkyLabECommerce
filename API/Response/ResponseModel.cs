@@ -8,11 +8,13 @@ namespace API.Response
 {
     public class ResponseModel : IResponseModel
     {
+        public int StatusCode { get; set; } = 0;
         public string Message { get; set; } = "";
     }
 
     public interface IResponseModel
     {
+        public int StatusCode { get; set; }
         string Message { get; set; }
     }
 
@@ -28,15 +30,15 @@ namespace API.Response
 
     public class SingleResponseModel<TModel> : ISingleResponseModel<TModel>
     {
+        public int StatusCode { get; set; }
         public string Message { get; set; } = "";
-
         public TModel? Model { get; set; }
     }
 
     public class ListResponseModel<TModel> : IListResponseModel<TModel>
     {
+        public int StatusCode { get; set; }
         public string Message { get; set; } = "";
-
         public IEnumerable<TModel>? Model { get; set; }
     }
 }

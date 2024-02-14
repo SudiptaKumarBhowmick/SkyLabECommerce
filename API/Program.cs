@@ -1,7 +1,9 @@
 using Data;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Service.Extensions;
 using Service.Middleware;
+using Service.Validations;
 using System;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,8 @@ builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.ModelStateValidationService();
 
 var app = builder.Build();
 

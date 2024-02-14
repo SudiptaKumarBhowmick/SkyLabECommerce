@@ -9,10 +9,12 @@ namespace API.Response
         public static IActionResult ToHttpResponse<TModel>(this ISingleResponseModel<TModel> response)
         {
             var status = HttpStatusCode.OK;
+            response.StatusCode = Convert.ToInt32(HttpStatusCode.OK);
             response.Message = "Successful";
 
             if (response.Model == null)
             {
+                response.StatusCode = Convert.ToInt32(HttpStatusCode.NotFound);
                 response.Message = "No data found";
                 status = HttpStatusCode.NotFound;
             }
@@ -26,10 +28,12 @@ namespace API.Response
         public static IActionResult ToHttpListResponse<TModel>(this IListResponseModel<TModel> response)
         {
             var status = HttpStatusCode.OK;
+            response.StatusCode = Convert.ToInt32(HttpStatusCode.OK);
             response.Message = "Successful";
 
             if (response.Model == null)
             {
+                response.StatusCode = Convert.ToInt32(HttpStatusCode.NotFound);
                 response.Message = "No Data Found";
                 status = HttpStatusCode.NotFound;
             }
@@ -43,10 +47,12 @@ namespace API.Response
         public static IActionResult ToHttpCreatedResponse<TModel>(this ISingleResponseModel<TModel> response)
         {
             var status = HttpStatusCode.Created;
+            response.StatusCode = Convert.ToInt32(HttpStatusCode.Created);
             response.Message = "Successful";
 
             if (Convert.ToInt32(response.Model) == 0)
             {
+                response.StatusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
                 response.Message = "Failed to save data";
                 status = HttpStatusCode.BadRequest;
             }
@@ -60,9 +66,11 @@ namespace API.Response
         public static IActionResult ToHttpUpdatedResponse<TModel>(this ISingleResponseModel<TModel> response)
         {
             var status = HttpStatusCode.NoContent;
+            response.StatusCode = Convert.ToInt32(HttpStatusCode.NoContent);
 
             if (Convert.ToInt32(response.Model) == 0)
             {
+                response.StatusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
                 response.Message = "Failed to update data";
                 status = HttpStatusCode.BadRequest;
             }
@@ -76,9 +84,11 @@ namespace API.Response
         public static IActionResult ToHttpDeletedResponse<TModel>(this ISingleResponseModel<TModel> response)
         {
             var status = HttpStatusCode.NoContent;
+            response.StatusCode = Convert.ToInt32(HttpStatusCode.NoContent);
 
             if (Convert.ToInt32(response.Model) == 0)
             {
+                response.StatusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
                 response.Message = "Failed to delete data";
                 status = HttpStatusCode.BadRequest;
             }
@@ -92,6 +102,7 @@ namespace API.Response
         public static IActionResult ToHttpErrorResponse(this IResponseModel response)
         {
             var status = HttpStatusCode.BadRequest;
+            response.StatusCode = Convert.ToInt32(HttpStatusCode.BadRequest);
 
             return new ObjectResult(response)
             {
