@@ -20,7 +20,7 @@ export class UserTypeComponent {
   userTypeList: userType[] = [];
   addUserType: userType = new userType();
   editUserType: userType = new userType();
-  isAddFormSubmitted: boolean = false;
+  //isAddFormSubmitted: boolean = false;
 
   @ViewChild("userTypeEditFormCloseButton") userTypeEditFormCloseButton!: ElementRef;
 

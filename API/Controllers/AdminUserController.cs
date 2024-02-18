@@ -64,7 +64,7 @@ namespace API.Controllers
                 return errorResponse.ToHttpErrorResponse();
             }
 
-            var adminUserEntity = _mapper.Map<AdminUser>(adminUserDto);
+            var adminUserEntity = _mapper.Map(adminUserDto, adminUser);
 
             _unitOfWork.AdminUserRepository.Update(adminUserEntity);
 
