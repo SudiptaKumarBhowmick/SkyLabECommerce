@@ -1,4 +1,6 @@
 ﻿using API.Response;
+using AutoMapper;
+using Data.DTOs;
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -8,10 +10,12 @@ namespace API.Controllers
     public class OrderStatusController : BaseAPIController
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public OrderStatusController(IUnitOfWork unitOfWork)
+        public OrderStatusController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         [HttpGet("{id}")]
@@ -51,18 +55,20 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateOrderStatus(int id, [FromBody] OrderStatus orderStatus)
+        public async Task<IActionResult> UpdateOrderStatus(int id, [FromBody] OrderStatusDto orderStatusDto)
         {
-            if (id.Equals(0))
+            var orderStatus = await _unitOfWork.OrderStatusRepository.GetByIdAsync(id);
+            if (orderStatus == null)
             {
-                return BadRequest("Invalid request!");
-            }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
+                var errorResponse = new ResponseModel();
+                errorResponse.Message = "Order status not found";
+                return errorResponse.ToHttpErrorResponse();
             }
 
-            _unitOfWork.OrderStatusRepository.Update(id, orderStatus);
+            var orderStatusEntity = _mapper.Map(orderStatusDto, orderStatus);
+
+            _unitOfWork.OrderStatusRepository.Update(orderStatusEntity);
+
             var response = new SingleResponseModel<int>();
             response.Model = _unitOfWork.Save();
             return response.ToHttpUpdatedResponse();

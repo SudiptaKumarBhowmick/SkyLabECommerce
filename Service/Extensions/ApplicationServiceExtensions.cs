@@ -6,6 +6,8 @@ using Service.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Protocols;
 using Microsoft.AspNetCore.Mvc;
+using Data.Repositories;
+using Service.Interfaces;
 
 namespace Service.Extensions
 {
@@ -25,7 +27,16 @@ namespace Service.Extensions
 
         public static IServiceCollection AddMyDependencyGroup(this IServiceCollection services)
         {
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IAdminUserRepository, AdminUserRepository>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IUserTypeRepository, UserTypeRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            services.AddScoped<IOrderStatusRepository, OrderStatusRepository>();
+            services.AddScoped<IProductCategoryRepository, ProductCategoryRepository>();
+            services.AddScoped<IProductImageRepository, ProductImageRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductSubCategoryRepository, ProductSubCategoryRepository>();
 
             return services;
         }

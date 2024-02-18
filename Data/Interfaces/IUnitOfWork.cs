@@ -9,15 +9,15 @@ namespace Data.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        public IAdminUserRepository AdminUserRepository { get; }
-        public IOrderRepository OrderRepository { get; }
-        public IOrderStatusRepository OrderStatusRepository { get; }
-        public IProductCategoryRepository ProductCategoryRepository { get; }
-        public IProductImageRepository ProductImageRepository { get; }
-        public IProductRepository ProductRepository { get; }
-        public IProductSubCategoryRepository ProductSubCategoryRepository { get; }
-        public IUserRepository UserRepository { get; }
-        public IUserTypeRepository UserTypeRepository { get; }
-        public int Save();
+        IAdminUserRepository AdminUserRepository { get; }
+        IOrderRepository OrderRepository { get; }
+        IOrderStatusRepository OrderStatusRepository { get; }
+        IProductCategoryRepository ProductCategoryRepository { get; }
+        IProductImageRepository ProductImageRepository { get; }
+        IProductRepository ProductRepository { get; }
+        IProductSubCategoryRepository ProductSubCategoryRepository { get; }
+        IUserRepository UserRepository { get; }
+        IUserTypeRepository UserTypeRepository { get; }
+        int Save();
     }
 }

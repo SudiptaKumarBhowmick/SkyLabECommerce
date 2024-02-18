@@ -54,11 +54,19 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateProductSubCategory(int id, [FromBody] ProductSubCategoryDto productSubCategoryDto)
+        public async Task<IActionResult> UpdateProductSubCategory(int id, [FromBody] ProductSubCategoryDto productSubCategoryDto)
         {
-            var productSubCategoryEntity = _mapper.Map<ProductSubCategory>(productSubCategoryDto);
+            var productSubCategory = await _unitOfWork.ProductSubCategoryRepository.GetByIdAsync(id);
+            if (productSubCategory == null)
+            {
+                var errorResponse = new ResponseModel();
+                errorResponse.Message = "Product subcategory not found";
+                return errorResponse.ToHttpErrorResponse();
+            }
 
-            _unitOfWork.ProductSubCategoryRepository.Update(id, productSubCategoryEntity);
+            var productSubCategoryEntity = _mapper.Map(productSubCategoryDto, productSubCategory);
+
+            _unitOfWork.ProductSubCategoryRepository.Update(productSubCategoryEntity);
 
             var response = new SingleResponseModel<int>();
             response.Model = _unitOfWork.Save();

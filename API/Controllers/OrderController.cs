@@ -59,20 +59,19 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateOrder(int id, [FromBody] OrderDto orderDto)
+        public async Task<IActionResult> UpdateOrder(int id, [FromBody] OrderDto orderDto)
         {
-            if (id.Equals(0))
+            var order = await _unitOfWork.OrderRepository.GetByIdAsync(id);
+            if (order == null)
             {
-                return BadRequest("Invalid request!");
-            }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
+                var errorResponse = new ResponseModel();
+                errorResponse.Message = "Order not found";
+                return errorResponse.ToHttpErrorResponse();
             }
 
-            var orderEntity = _mapper.Map<Order>(orderDto);
+            var orderEntity = _mapper.Map(orderDto, order);
 
-            _unitOfWork.OrderRepository.Update(id, orderEntity);
+            _unitOfWork.OrderRepository.Update(orderEntity);
 
             var response = new SingleResponseModel<int>();
             response.Model = _unitOfWork.Save();

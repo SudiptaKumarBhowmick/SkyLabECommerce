@@ -54,11 +54,19 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateProduct(int id, [FromBody] ProductDto productDto)
+        public async Task<IActionResult> UpdateProduct(int id, [FromBody] ProductDto productDto)
         {
-            var productEntity = _mapper.Map<Product>(productDto);
+            var product = await _unitOfWork.ProductRepository.GetByIdAsync(id);
+            if (product == null)
+            {
+                var errorResponse = new ResponseModel();
+                errorResponse.Message = "Product not found";
+                return errorResponse.ToHttpErrorResponse();
+            }
 
-            _unitOfWork.ProductRepository.Update(id, productEntity);
+            var productEntity = _mapper.Map(productDto, product);
+
+            _unitOfWork.ProductRepository.Update(productEntity);
 
             var response = new SingleResponseModel<int>();
             response.Model = _unitOfWork.Save();

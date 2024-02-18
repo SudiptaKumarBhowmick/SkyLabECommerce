@@ -1,0 +1,74 @@
+<div class="content-wrapper">
+  <div class="content">
+    <form class="form" (ngSubmit)="saveUserType()" #userTypeAddForm="ngForm">
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label for="typeName">Type name: </label>
+          <input type="text" class="form-control" id="typeName" placeholder="Normal User" autocomplete="off"
+            name="typeName" [(ngModel)]="addUserType.typeName" #typeName="ngModel" required>
+          <div [hidden]="typeName.valid || typeName.pristine" class="alert alert-danger">
+            Type name is requied
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="!userTypeForm.form.valid" class="btn btn-primary">Save</button>
+    </form>
+
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Type Name</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let userType of userTypeList; index as i">
+          <th scope="row">{{i + 1}}</th>
+          <td>{{userType.typeName}}</td>
+          <td>
+            <button type="button" class="btn btn-success" data-toggle="modal"
+              data-target="#userTypeUpdateModal" (click)="getUserType(userType.id)">Update</button>
+            <button type="button" class="btn btn-danger" (click)="deleteUserType(userType.id)">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Modal -->
+    <div class="modal fade" id="userTypeUpdateModal" tabindex="-1" role="dialog" aria-labelledby="userTypeUpdateModal"
+      aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form (ngSubmit)="updateUserType(editUserType.id, editUserType)" #userTypeEditForm="ngForm">
+            <div class="modal-header">
+              <h5 class="modal-title" id="userTypeUpdateModalLabel">Modal title</h5>
+              <button #userTypeEditFormCloseButton type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="editTypeName">Type name: </label>
+                  <input type="text" class="form-control" id="editTypeName" placeholder="Normal User" autocomplete="off"
+                    name="editTypeName" [(ngModel)]="editUserType.typeName" #editTypeName="ngModel" required>
+                  <div [hidden]="typeName.valid || typeName.pristine" class="alert alert-danger">
+                    Type name is requied
+                  </div>
+                </div>
+              </div>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" [disabled]="!userTypeEditForm.form.valid" class="btn btn-primary">Update</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

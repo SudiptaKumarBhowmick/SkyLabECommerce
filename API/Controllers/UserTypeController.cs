@@ -1,4 +1,6 @@
 ﻿using API.Response;
+using AutoMapper;
+using Data.DTOs;
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -8,10 +10,12 @@ namespace API.Controllers
     public class UserTypeController : BaseAPIController
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public UserTypeController(IUnitOfWork unitOfWork)
+        public UserTypeController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         [HttpGet("{id}")]
@@ -51,20 +55,23 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateUserType(int id, [FromBody] UserType userType)
+        public async Task<IActionResult> UpdateUserType(int id, [FromBody] UserTypeDto userTypeDto)
         {
-            if (id.Equals(0))
+            var userType = await _unitOfWork.UserTypeRepository.GetByIdAsync(id);
+            if (userType == null)
             {
-                return BadRequest("Invalid request!");
-            }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
+                var errorResponse = new ResponseModel();
+                errorResponse.Message = "User type not found";
+                return errorResponse.ToHttpErrorResponse();
             }
 
-            _unitOfWork.UserTypeRepository.Update(id, userType);
+            var userTypeEntity = _mapper.Map(userTypeDto, userType);
+
+            _unitOfWork.UserTypeRepository.Update(userTypeEntity);
+
             var response = new SingleResponseModel<int>();
             response.Model = _unitOfWork.Save();
+
             return response.ToHttpUpdatedResponse();
         }
 

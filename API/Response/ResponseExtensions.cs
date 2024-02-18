@@ -65,8 +65,9 @@ namespace API.Response
 
         public static IActionResult ToHttpUpdatedResponse<TModel>(this ISingleResponseModel<TModel> response)
         {
-            var status = HttpStatusCode.NoContent;
-            response.StatusCode = Convert.ToInt32(HttpStatusCode.NoContent);
+            var status = HttpStatusCode.OK;
+            response.StatusCode = Convert.ToInt32(HttpStatusCode.OK);
+            response.Message = "Successful";
 
             if (Convert.ToInt32(response.Model) == 0)
             {
@@ -83,8 +84,9 @@ namespace API.Response
 
         public static IActionResult ToHttpDeletedResponse<TModel>(this ISingleResponseModel<TModel> response)
         {
-            var status = HttpStatusCode.NoContent;
-            response.StatusCode = Convert.ToInt32(HttpStatusCode.NoContent);
+            var status = HttpStatusCode.OK;
+            response.StatusCode = Convert.ToInt32(HttpStatusCode.OK);
+            response.Message = "Successful";
 
             if (Convert.ToInt32(response.Model) == 0)
             {

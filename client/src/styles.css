@@ -1,1 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+.content-wrapper{
+    background-color: white !important;
+}
+
+.form{
+    padding: 20px;
+    margin: 20px;
+    background-color: #f4f6f9;
+}
+
+table{
+    padding: 20px;
+}
+
+.btn{
+    margin-right: 5px;
+}

@@ -54,11 +54,19 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateAdminUser(int id, [FromBody] AdminUserDto adminUserDto)
+        public async Task<IActionResult> UpdateAdminUser(int id, [FromBody] AdminUserDto adminUserDto)
         {
+            var adminUser = await _unitOfWork.AdminUserRepository.GetByIdAsync(id);
+            if (adminUser == null)
+            {
+                var errorResponse = new ResponseModel();
+                errorResponse.Message = "Admin user not found";
+                return errorResponse.ToHttpErrorResponse();
+            }
+
             var adminUserEntity = _mapper.Map<AdminUser>(adminUserDto);
 
-            _unitOfWork.AdminUserRepository.Update(id, adminUserEntity);
+            _unitOfWork.AdminUserRepository.Update(adminUserEntity);
 
             var response = new SingleResponseModel<int>();
             response.Model = _unitOfWork.Save();

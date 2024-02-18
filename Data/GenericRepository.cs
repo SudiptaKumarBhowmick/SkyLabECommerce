@@ -34,17 +34,17 @@ namespace Data
 
         public async Task<T?> GetByIdAsync(int id)
         {
-            return await _applicationDBContext.Set<T>().FindAsync(id);
+            var entity = await _applicationDBContext.Set<T>().FindAsync(id);
+            if (entity is not null)
+            {
+                _applicationDBContext.Entry(entity).State = EntityState.Detached;
+            }
+            return entity;
         }
 
-        public void Update(int id, T entity)
+        public void Update(T entity)
         {
-            var data = _applicationDBContext.Set<T>().Find(id);
-
-            if (data != null)
-            {
-                _applicationDBContext.Entry(entity).State = EntityState.Modified;
-            }
+            _applicationDBContext.Entry(entity).State = EntityState.Modified;
         }
     }
 }

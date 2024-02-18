@@ -1,4 +1,6 @@
 ﻿using API.Response;
+using AutoMapper;
+using Data.DTOs;
 using Data.Entities;
 using Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -8,10 +10,12 @@ namespace API.Controllers
     public class ProductCategoryController : BaseAPIController
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ProductCategoryController(IUnitOfWork unitOfWork)
+        public ProductCategoryController(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         [HttpGet("{id}")]
@@ -51,18 +55,18 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult UpdateProductCategory(int id, [FromBody] ProductCategory productCategory)
+        public async Task<IActionResult> UpdateProductCategory(int id, [FromBody] ProductCategoryDto productCategoryDto)
         {
-            if (id.Equals(0))
+            var productCategory = await _unitOfWork.ProductCategoryRepository.GetByIdAsync(id);
+            if (productCategory == null)
             {
-                return BadRequest("Invalid request!");
-            }
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
+                var errorResponse = new ResponseModel();
+                errorResponse.Message = "Product category not found";
+                return errorResponse.ToHttpErrorResponse();
             }
 
-            _unitOfWork.ProductCategoryRepository.Update(id, productCategory);
+            var productCategoryEntity = _mapper.Map(productCategoryDto, productCategory);
+            _unitOfWork.ProductCategoryRepository.Update(productCategoryEntity);
             var response = new SingleResponseModel<int>();
             response.Model = _unitOfWork.Save();
             return response.ToHttpUpdatedResponse();
