@@ -5,17 +5,42 @@
         <div class="form-group col-md-6">
           <label for="userName">Username: </label>
           <input type="text" class="form-control" id="userName" placeholder="johndoe" autocomplete="off" name="userName"
-            [(ngModel)]="addAdminUser.userName" #userName="ngModel" required>
-          <div [hidden]="userName.valid || userName.pristine" class="alert alert-danger">
+            [(ngModel)]="addAdminUserModel.userName" #userName="ngModel" required minlength="3" maxlength="50">
+          <div *ngIf="(userName.touched || userName.dirty) && userName.errors?.['required']" class="alert alert-danger">
             Username is requied
+          </div>
+          <div *ngIf="(userName.touched || userName.dirty) && userName.errors?.['minlength']"
+            class="alert alert-danger">
+            Username must be minimum 3 characters long
+          </div>
+          <div *ngIf="(userName.touched || userName.dirty) && userName.errors?.['maxlength']"
+            class="alert alert-danger">
+            Username must be maximum 50 characters long
           </div>
         </div>
         <div class="form-group col-md-6">
           <label for="userPassword">Password: </label>
           <input type="password" class="form-control" id="userPassword" placeholder="********" autocomplete="off"
-            name="userPassword" [(ngModel)]="addAdminUser.password" #userPassword="ngModel" required>
-          <div [hidden]="userPassword.valid || userPassword.pristine" class="alert alert-danger">
+            name="userPassword" [(ngModel)]="addAdminUserModel.password" #userPassword="ngModel" appPasswordPattern
+            minlength="8" maxlength="20" required>
+          <!-- <div [hidden]="userPassword.valid || userPassword.pristine" class="alert alert-danger">
             Password is requied
+          </div> -->
+          <div *ngIf="(userPassword.touched || userPassword.dirty) && userPassword.errors?.['required']"
+            class="alert alert-danger">
+            Password is requied
+          </div>
+          <div *ngIf="(userPassword.touched || userPassword.dirty)  && userPassword.errors?.['invalidPassword']"
+            class="alert alert-danger">
+            Password must contain one lowercase alphabet, uppercase alphabet, numeric digit and special character
+          </div>
+          <div *ngIf="(userPassword.touched || userPassword.dirty) && userPassword.errors?.['minlength']"
+            class="alert alert-danger">
+            Password must be minimum 8 characters long
+          </div>
+          <div *ngIf="(userPassword.touched || userPassword.dirty) && userPassword.errors?.['maxlength']"
+            class="alert alert-danger">
+            Password must be maximum 20 characters long
           </div>
         </div>
       </div>
@@ -24,19 +49,31 @@
         <div class="form-group col-md-6">
           <label for="userEmail">Email: </label>
           <input type="text" class="form-control" id="userEmail" placeholder="johndoe@email.com" autocomplete="off"
-            name="userEmail" [(ngModel)]="addAdminUser.userEmail" #userEmail="ngModel" required>
-          <div [hidden]="userEmail.valid || userEmail.pristine" class="alert alert-danger">
+            name="userEmail" [(ngModel)]="addAdminUserModel.userEmail" #userEmail="ngModel" appEmailPattern
+            maxlength="150" required>
+          <!-- <div [hidden]="userEmail.valid || userEmail.pristine" class="alert alert-danger">
             Email is requied
+          </div> -->
+          <div *ngIf="(userEmail.touched || userEmail.dirty) && userEmail.errors?.['required']"
+            class="alert alert-danger">
+            Email is requied
+          </div>
+          <div *ngIf="(userEmail.touched || userEmail.dirty) && userEmail.errors?.['invalidEmail']"
+            class="alert alert-danger">
+            Enter a valid email
+          </div>
+          <div *ngIf="(userEmail.touched || userEmail.dirty) && userEmail.errors?.['maxlength']"
+            class="alert alert-danger">
+            Email must be maximum 150 characters long
           </div>
         </div>
         <div class="form-group col-md-6">
-          <label for="userType">User type:</label>
-          <select class="form-control" id="userType" required [(ngModel)]="addAdminUser.userTypeId" name="userType"
-            #userType="ngModel">
-            <!-- <option [value]="-1" selected>Select user type</option> -->
+          <label for="userTypeDDL">User type:</label>
+          <select class="form-control" id="userTypeDDL" [(ngModel)]="addAdminUserModel.userTypeId" name="userTypeDDL"
+            #userTypeDDL="ngModel" appValidateSelectOption="-1">
             <option *ngFor="let userType of userTypeListAddForm" [value]="userType.id">{{userType.typeName}}</option>
           </select>
-          <div [hidden]="userType.valid || userType.pristine" class="alert alert-danger">
+          <div *ngIf="(userTypeDDL.touched || userTypeDDL.dirty) && userTypeDDL.errors?.['defaultSelected']" class="alert alert-danger">
             User type is required
           </div>
         </div>
@@ -49,7 +86,8 @@
         <tr>
           <th scope="col">#</th>
           <th scope="col">Username</th>
-          <th scope="col">User Email</th>
+          <th scope="col">User email</th>
+          <th scope="col">User type</th>
           <th scope="col">Actions</th>
         </tr>
       </thead>
@@ -58,6 +96,7 @@
           <th scope="row">{{i + 1}}</th>
           <td>{{adminUser.userName}}</td>
           <td>{{adminUser.userEmail}}</td>
+          <td>{{adminUser.userType.typeName}}</td>
           <td>
             <button type="button" class="btn btn-success" data-toggle="modal" data-target="#adminUserUpdateModal"
               (click)="getAdminUser(adminUser.id)">Update</button>
@@ -72,7 +111,7 @@
       aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <form (ngSubmit)="updateAdminUser(editAdminUser.id, editAdminUser)" #adminUserEditForm="ngForm">
+          <form (ngSubmit)="updateAdminUser(editAdminUserModel.id, editAdminUserModel)" #adminUserEditForm="ngForm">
             <div class="modal-header">
               <h5 class="modal-title" id="adminUserUpdateModalLabel">Modal title</h5>
               <button #adminUserEditFormCloseButton type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -84,19 +123,46 @@
                 <div class="form-group col-md-6">
                   <label for="editUserName">Username: </label>
                   <input type="text" class="form-control" id="editUserName" placeholder="johndoe" autocomplete="off"
-                    name="editUserName" [(ngModel)]="editAdminUser.userName" #editUserName="ngModel" required>
-                  <div [hidden]="editUserName.valid || editUserName.pristine" class="alert alert-danger">
+                    name="editUserName" [(ngModel)]="editAdminUserModel.userName" #editUserName="ngModel" required>
+                  <!-- <div [hidden]="editUserName.valid || editUserName.pristine" class="alert alert-danger">
                     Username is requied
+                  </div> -->
+                  <div *ngIf="(editUserName.touched || editUserName.dirty) && editUserName.errors?.['required']" class="alert alert-danger">
+                    Username is requied
+                  </div>
+                  <div *ngIf="(editUserName.touched || editUserName.dirty) && editUserName.errors?.['minlength']"
+                    class="alert alert-danger">
+                    Username must be minimum 3 characters long
+                  </div>
+                  <div *ngIf="(editUserName.touched || editUserName.dirty) && editUserName.errors?.['maxlength']"
+                    class="alert alert-danger">
+                    Username must be maximum 50 characters long
                   </div>
                 </div>
                 <div class="form-group col-md-6">
                   <label for="editUserPassword">Password: </label>
                   <input type="password" class="form-control" id="editUserPassword" placeholder="********"
-                    autocomplete="off" name="editUserPassword" [(ngModel)]="editAdminUser.password" #editUserPassword="ngModel"
-                    required>
-                  <div [hidden]="editUserPassword.valid || editUserPassword.pristine" class="alert alert-danger">
+                    autocomplete="off" name="editUserPassword" [(ngModel)]="editAdminUserModel.password"
+                    #editUserPassword="ngModel" appPasswordPattern minlength="8" maxlength="20" required>
+                  <!-- <div [hidden]="editUserPassword.valid || editUserPassword.pristine" class="alert alert-danger">
                     Password is requied
-                  </div>
+                  </div> -->
+                  <div *ngIf="(editUserPassword.touched || editUserPassword.dirty) && editUserPassword.errors?.['required']"
+                  class="alert alert-danger">
+                  Password is requied
+                </div>
+                <div *ngIf="(editUserPassword.touched || editUserPassword.dirty)  && editUserPassword.errors?.['invalidPassword']"
+                  class="alert alert-danger">
+                  Password must contain one lowercase alphabet, uppercase alphabet, numeric digit and special character
+                </div>
+                <div *ngIf="(editUserPassword.touched || userPassword.dirty) && editUserPassword.errors?.['minlength']"
+                  class="alert alert-danger">
+                  Password must be minimum 8 characters long
+                </div>
+                <div *ngIf="(editUserPassword.touched || editUserPassword.dirty) && editUserPassword.errors?.['maxlength']"
+                  class="alert alert-danger">
+                  Password must be maximum 20 characters long
+                </div>
                 </div>
               </div>
 
@@ -104,20 +170,29 @@
                 <div class="form-group col-md-6">
                   <label for="editUserEmail">Email: </label>
                   <input type="text" class="form-control" id="editUserEmail" placeholder="johndoe@email.com"
-                    autocomplete="off" name="editUserEmail" [(ngModel)]="editAdminUser.userEmail" #editUserEmail="ngModel"
-                    required>
-                  <div [hidden]="editUserEmail.valid || editUserEmail.pristine" class="alert alert-danger">
-                    Email is requied
-                  </div>
+                    autocomplete="off" name="editUserEmail" [(ngModel)]="editAdminUserModel.userEmail"
+                    #editUserEmail="ngModel" appEmailPattern maxlength="150" required>
+                  <div *ngIf="(editUserEmail.touched || editUserEmail.dirty) && editUserEmail.errors?.['required']"
+                  class="alert alert-danger">
+                  Email is requied
+                </div>
+                <div *ngIf="(editUserEmail.touched || editUserEmail.dirty) && editUserEmail.errors?.['invalidEmail']"
+                  class="alert alert-danger">
+                  Enter a valid email
+                </div>
+                <div *ngIf="(editUserEmail.touched || editUserEmail.dirty) && editUserEmail.errors?.['maxlength']"
+                  class="alert alert-danger">
+                  Email must be maximum 150 characters long
+                </div>
                 </div>
                 <div class="form-group col-md-6">
-                  <label for="editUserType">User type:</label>
-                  <select class="form-control" id="editUserType" required [(ngModel)]="editAdminUser.userTypeId"
-                    name="editUserType" #editUserType="ngModel">
-                    <!-- <option [value]="-1" selected>Select user type</option> -->
-                    <option *ngFor="let userType of userTypeListEditForm" [value]="userType.id">{{userType.typeName}}</option>
+                  <label for="editUserTypeDDL">User type:</label>
+                  <select class="form-control" id="editUserTypeDDL" required [(ngModel)]="editAdminUserModel.userTypeId"
+                    name="editUserTypeDDL" #editUserTypeDDL="ngModel" appValidateSelectOption="-1">
+                    <option *ngFor="let userType of userTypeListEditForm" [value]="userType.id">{{userType.typeName}}
+                    </option>
                   </select>
-                  <div [hidden]="editUserType.valid || editUserType.pristine" class="alert alert-danger">
+                  <div *ngIf="(editUserTypeDDL.touched || editUserTypeDDL.dirty) && editUserTypeDDL.errors?.['defaultSelected']" class="alert alert-danger">
                     User type is required
                   </div>
                 </div>

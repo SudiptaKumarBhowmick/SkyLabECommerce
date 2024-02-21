@@ -1,7 +1,10 @@
-export class adminUser{
-    id: number = 0;
-    userName: string = "";
-    password: string = "";
-    userEmail: string = "";
-    userTypeId: number = 0;
+import { userType } from "./userType";
+
+export interface adminUser{
+    id: number;
+    userName: string;
+    password: string;
+    userEmail: string;
+    userTypeId: number;
+    userType: userType;
 }

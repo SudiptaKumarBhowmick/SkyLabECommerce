@@ -18,8 +18,16 @@ export class UserTypeComponent {
   @ViewChild("userTypeEditForm") userTypeEditForm!: NgForm;
 
   userTypeList: userType[] = [];
-  addUserType: userType = new userType();
-  editUserType: userType = new userType();
+  addUserType: userType = {
+    id: 0,
+    typeName: ""
+  };
+
+  editUserType: userType = {
+    id: 0,
+    typeName: ""
+  };
+  
   //isAddFormSubmitted: boolean = false;
 
   @ViewChild("userTypeEditFormCloseButton") userTypeEditFormCloseButton!: ElementRef;
@@ -71,10 +79,14 @@ export class UserTypeComponent {
   resetForms(formType: string){
     if(formType == "add")
     {
-      this.userTypeAddForm.reset();
+      this.userTypeAddForm.reset({
+        typeName: ""
+      });
     }
     else if(formType == "edit"){
-      this.userTypeEditForm.reset();
+      this.userTypeEditForm.reset({
+        editTypeName: ""
+      });
     }
   }
 }

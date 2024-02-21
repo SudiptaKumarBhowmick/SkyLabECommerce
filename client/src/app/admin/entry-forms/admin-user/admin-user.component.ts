@@ -6,11 +6,20 @@ import { ListResponse } from '../../../_responses/listResponse';
 import { CommonModule } from '@angular/common';
 import { userType } from '../../../_models/userType';
 import { SingleResponse } from '../../../_responses/singleResponse';
+import { EmailPatternDirective } from '../../../_directives/email-pattern.directive';
+import { PasswordPatternDirective } from '../../../_directives/password-pattern.directive';
+import { ValidateSelectOptionDirective } from '../../../_directives/validate-select-option.directive';
 
 @Component({
   selector: 'app-admin-user',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    EmailPatternDirective,
+    PasswordPatternDirective,
+    ValidateSelectOptionDirective
+  ],
   templateUrl: './admin-user.component.html',
   styleUrl: './admin-user.component.css'
 })
@@ -21,8 +30,30 @@ export class AdminUserComponent {
   adminUserList: adminUser[] = [];
   userTypeListAddForm: userType[] = [];
   userTypeListEditForm: userType[] = [];
-  addAdminUser: adminUser = new adminUser();
-  editAdminUser: adminUser = new adminUser();
+
+  addAdminUserModel: adminUser = {
+    id: 0,
+    password: "",
+    userEmail: "",
+    userName: "",
+    userTypeId: -1,
+    userType: {
+      id: 0,
+      typeName: ""
+    }
+  };
+
+  editAdminUserModel: adminUser = {
+    id: 0,
+    password: "",
+    userEmail: "",
+    userName: "",
+    userTypeId: -1,
+    userType: {
+      id: 0,
+      typeName: ""
+    }
+  };
 
   @ViewChild("adminUserEditFormCloseButton") adminUserEditFormCloseButton!: ElementRef;
 
@@ -47,8 +78,8 @@ export class AdminUserComponent {
     this.genericService.controllerName = "UserType";
     this.genericService.getAll().subscribe(userTypes => {
       var response = userTypes as ListResponse<userType>;
-      this.userTypeListAddForm = response.model;
-      this.userTypeListEditForm = response.model;
+      this.userTypeListAddForm = this.userTypeListAddForm.concat(response.model);
+      this.userTypeListEditForm = this.userTypeListEditForm.concat(response.model);
 
       var selectedData: userType = {
         id: -1,
@@ -57,17 +88,14 @@ export class AdminUserComponent {
 
       this.userTypeListAddForm.unshift(selectedData);
       this.userTypeListEditForm.unshift(selectedData);
-      console.log(response.model);
-      console.log(this.userTypeListEditForm);
-      console.log(this.userTypeListEditForm);
 
-      this.addAdminUser.userTypeId = -1;
+      this.addAdminUserModel.userTypeId = -1;
     })
   }
 
   saveAdminUser(){
     this.genericService.controllerName = "AdminUser";
-    this.genericService.post<adminUser>(this.addAdminUser).subscribe(() => {
+    this.genericService.post<adminUser>(this.addAdminUserModel).subscribe(() => {
       this.getAllAdminUser();
       this.resetForms("add");
     })
@@ -77,7 +105,7 @@ export class AdminUserComponent {
     this.genericService.controllerName = "AdminUser";
     this.genericService.get(id).subscribe(result => {
       var response = result as SingleResponse<adminUser>;
-      this.editAdminUser = response.model;
+      this.editAdminUserModel = response.model;
     })
   }
 
@@ -98,11 +126,21 @@ export class AdminUserComponent {
   resetForms(formType: string){
     if(formType == "add")
     {
-      this.adminUserAddForm.reset();
+      this.adminUserAddForm.reset({
+        userName: "",
+        userPassword: "",
+        userEmail: "",
+        userTypeDDL: -1
+      });
     }
     else if(formType == "edit")
     {
-      this.adminUserEditForm.reset();
+      this.adminUserEditForm.reset({
+        editUserName: "",
+        editUserPassword: "",
+        editUserEmail: "",
+        editUserType: -1
+      });
     }
   }
 }

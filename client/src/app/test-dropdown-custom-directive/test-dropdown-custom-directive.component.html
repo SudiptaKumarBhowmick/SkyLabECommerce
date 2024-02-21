@@ -1,0 +1,22 @@
+<div class="content-wrapper">
+    <div class="content">
+        <form class="form" #testDropdownForm="ngForm">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="testMenu">Test Menu:</label>
+                    <select class="form-control" id="testMenu"
+                     [(ngModel)]="testFormData.id" name="testMenu"
+                      #testMenu="ngModel" appTestValidate="-1">
+                      <!-- <option value="-1">Select.......</option> -->
+                      <option *ngFor="let data of testMenuList" [value]="data.id">
+                        {{data.name}}
+                      </option>
+                    </select>
+                    <div *ngIf="(testMenu.touched || testMenu.dirty) && testMenu.errors?.['defaultSelected']" class="alert alert-danger">
+                        User type is required
+                      </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

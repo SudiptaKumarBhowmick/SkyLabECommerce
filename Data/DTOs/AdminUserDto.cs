@@ -27,5 +27,6 @@ namespace Data.DTOs
         [RegularExpression(@"^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}$", ErrorMessage = "Invalid email address")]
         public required string UserEmail { get; set; }
         public int UserTypeId { get; set; }
+        public string TypeName { get; set; } = "";
     }
 }

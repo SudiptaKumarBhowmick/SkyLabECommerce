@@ -22,6 +22,7 @@ namespace Service.Extensions
             ///After disable, the errors can track at controller action method
             //services.Configure<ApiBehaviorOptions>(options=> options.SuppressModelStateInvalidFilter = true);
 
+            services.AddControllersWithViews().AddNewtonsoftJson(options => options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             return services;
         }
 

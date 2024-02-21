@@ -5,9 +5,13 @@
         <div class="form-group col-md-6">
           <label for="typeName">Type name: </label>
           <input type="text" class="form-control" id="typeName" placeholder="Normal User" autocomplete="off"
-            name="typeName" [(ngModel)]="addUserType.typeName" #typeName="ngModel" required>
-          <div [hidden]="typeName.valid || typeName.pristine" class="alert alert-danger">
+            name="typeName" [(ngModel)]="addUserType.typeName" #typeName="ngModel" maxlength="30" required>
+          <div *ngIf="(typeName.touched || typeName.dirty) && typeName.errors?.['required']" class="alert alert-danger">
             Type name is requied
+          </div>
+          <div *ngIf="(typeName.touched || typeName.dirty) && typeName.errors?.['maxlength']"
+            class="alert alert-danger">
+            Type name must be maximum 30 characters long
           </div>
         </div>
       </div>
@@ -28,8 +32,8 @@
           <th scope="row">{{i + 1}}</th>
           <td>{{userType.typeName}}</td>
           <td>
-            <button type="button" class="btn btn-success" data-toggle="modal"
-              data-target="#userTypeUpdateModal" (click)="getUserType(userType.id)">Update</button>
+            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#userTypeUpdateModal"
+              (click)="getUserType(userType.id)">Update</button>
             <button type="button" class="btn btn-danger" (click)="deleteUserType(userType.id)">Delete</button>
           </td>
         </tr>
@@ -43,7 +47,7 @@
         <div class="modal-content">
           <form (ngSubmit)="updateUserType(editUserType.id, editUserType)" #userTypeEditForm="ngForm">
             <div class="modal-header">
-              <h5 class="modal-title" id="userTypeUpdateModalLabel">Modal title</h5>
+              <h5 class="modal-title" id="userTypeUpdateModalLabel">Update User Type</h5>
               <button #userTypeEditFormCloseButton type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -55,9 +59,13 @@
                   <label for="editTypeName">Type name: </label>
                   <input type="text" class="form-control" id="editTypeName" placeholder="Normal User" autocomplete="off"
                     name="editTypeName" [(ngModel)]="editUserType.typeName" #editTypeName="ngModel" required>
-                  <div [hidden]="typeName.valid || typeName.pristine" class="alert alert-danger">
-                    Type name is requied
-                  </div>
+                    <div *ngIf="(editTypeName.touched || editTypeName.dirty) && editTypeName.errors?.['required']" class="alert alert-danger">
+                      Type name is requied
+                    </div>
+                    <div *ngIf="(editTypeName.touched || editTypeName.dirty) && editTypeName.errors?.['maxlength']"
+                      class="alert alert-danger">
+                      Type name must be maximum 30 characters long
+                    </div>
                 </div>
               </div>
 

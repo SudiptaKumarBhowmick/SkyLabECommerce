@@ -27,7 +27,7 @@ namespace Data
             _applicationDBContext.Remove(entity);
         }
 
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public virtual async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _applicationDBContext.Set<T>().ToListAsync();
         }
