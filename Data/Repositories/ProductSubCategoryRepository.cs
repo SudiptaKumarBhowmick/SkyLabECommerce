@@ -1,5 +1,6 @@
 ﻿using Data.Entities;
 using Data.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,11 @@ namespace Data.Repositories
         public ProductSubCategoryRepository(ApplicationDBContext applicationDBContext) : base(applicationDBContext)
         {
             
+        }
+
+        public async override Task<IEnumerable<ProductSubCategory>> GetAllAsync()
+        {
+            return await _applicationDBContext.ProductSubCategory.Include(entity => entity.ProductCategory).ToListAsync();
         }
     }
 }
