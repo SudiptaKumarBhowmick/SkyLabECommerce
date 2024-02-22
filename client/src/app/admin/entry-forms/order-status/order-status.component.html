@@ -1,0 +1,107 @@
+<div class="content-wrapper">
+    <div class="content">
+        <form class="form" (ngSubmit)="saveOrderStatus()" #orderStatusAddForm="ngForm">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="statusCode">Status code: </label>
+                    <input type="number" class="form-control" id="statusCode" placeholder="1" autocomplete="off"
+                        name="statusCode" [(ngModel)]="addOrderStatus.statusCode" #statusCode="ngModel" required>
+                    <div *ngIf="(statusCode.touched || statusCode.dirty) && statusCode.errors?.['required']"
+                        class="alert alert-danger">
+                        Status code is requied
+                    </div>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="statusName">Status name: </label>
+                    <!-- <input type="text" class="form-control" id="typeName" placeholder="Order Confirmed" autocomplete="off"
+                  name="statusName" [(ngModel)]="addUserType.typeName" #statusName="ngModel" maxlength="250" required> -->
+                    <textarea class="form-control" id="statusName" placeholder="Order Placed" name="statusName"
+                        [(ngModel)]="addOrderStatus.status" #statusName="ngModel" required maxlength="250"></textarea>
+                    <div *ngIf="(statusName.touched || statusName.dirty) && statusName.errors?.['required']"
+                        class="alert alert-danger">
+                        Status name is requied
+                    </div>
+                    <div *ngIf="(statusName.touched || statusName.dirty) && statusName.errors?.['maxlength']"
+                        class="alert alert-danger">
+                        Status name must be maximum 250 characters long
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" [disabled]="!orderStatusAddForm.form.valid" class="btn btn-primary">Save</button>
+        </form>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Status code</th>
+                    <th scope="col">Status name</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let data of orderStatusList; index as i">
+                    <th scope="row">{{i + 1}}</th>
+                    <td>{{data.statusCode}}</td>
+                    <td>{{data.status}}</td>
+                    <td>
+                        <button type="button" class="btn btn-success" data-toggle="modal"
+                            data-target="#orderStatusUpdateModal" (click)="getOrderStatus(data.id)">Update</button>
+                        <button type="button" class="btn btn-danger"
+                            (click)="deleteOrderStatus(data.id)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Modal -->
+        <div class="modal fade" id="orderStatusUpdateModal" tabindex="-1" role="dialog"
+            aria-labelledby="orderStatusUpdateModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form (ngSubmit)="updateOrderStatus(editOrderStatus.id, editOrderStatus)" #orderStatusEditForm="ngForm">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="orderStatusUpdateModalLabel">Update Order Status</h5>
+                            <button #orderStatusEditFormCloseButton type="button" class="close" data-dismiss="modal"
+                                aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="editStatusCode">Status code: </label>
+                                    <input type="number" class="form-control" id="editStatusCode" placeholder="1" autocomplete="off"
+                                        name="editStatusCode" [(ngModel)]="editOrderStatus.statusCode" #editStatusCode="ngModel" required>
+                                    <div *ngIf="(editStatusCode.touched || editStatusCode.dirty) && editStatusCode.errors?.['required']"
+                                        class="alert alert-danger">
+                                        Status code is requied
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label for="statusName">Status name: </label>
+                                    <textarea class="form-control" id="editStatusName" placeholder="Order Placed" name="editStatusName"
+                                        [(ngModel)]="editOrderStatus.status" #editStatusName="ngModel" required maxlength="250"></textarea>
+                                    <div *ngIf="(editStatusName.touched || editStatusName.dirty) && editStatusName.errors?.['required']"
+                                        class="alert alert-danger">
+                                        Status name is requied
+                                    </div>
+                                    <div *ngIf="(editStatusName.touched || editStatusName.dirty) && editStatusName.errors?.['maxlength']"
+                                        class="alert alert-danger">
+                                        Status name must be maximum 250 characters long
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" [disabled]="!orderStatusEditForm.form.valid"
+                                class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

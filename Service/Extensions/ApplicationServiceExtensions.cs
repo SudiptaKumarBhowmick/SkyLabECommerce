@@ -38,6 +38,7 @@ namespace Service.Extensions
             services.AddScoped<IProductImageRepository, ProductImageRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductSubCategoryRepository, ProductSubCategoryRepository>();
+            services.AddScoped<ICloudinaryFileManager, CloudinaryFileManager>();
 
             return services;
         }
@@ -47,6 +48,11 @@ namespace Service.Extensions
             services.AddDbContext<ApplicationDBContext>(options => options.UseSqlServer(configuration.GetConnectionString("DBConn")));
 
             return services;
+        }
+
+        public static CloudinarySettings? GetCloudinarySettings(IConfiguration configuration)
+        {
+            return configuration.GetSection("CloudinarySettings").Get<CloudinarySettings>();
         }
     }
 }

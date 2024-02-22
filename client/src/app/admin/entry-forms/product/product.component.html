@@ -1,0 +1,186 @@
+<div class="content-wrapper">
+    <div class="content">
+        <form class="form" (ngSubmit)="saveProductSubCategory()" #productAddForm="ngForm">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="productName">Product name: </label>
+                    <input type="text" class="form-control" id="productName" placeholder="Watch" autocomplete="off"
+                        name="productName" [(ngModel)]="addProductFormsModel.name" #productName="ngModel" required
+                        maxlength="250">
+                    <div *ngIf="(productName.touched || productName.dirty) && productName.errors?.['required']"
+                        class="alert alert-danger">
+                        Product name is requied
+                    </div>
+                    <div *ngIf="(productName.touched || productName.dirty) && productName.errors?.['maxlength']"
+                        class="alert alert-danger">
+                        Product name must be maximum 250 characters long
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="productDescription">Product description: </label>
+                    <!-- <input type="text" class="form-control" id="productDescription" placeholder="Watch"
+                        autocomplete="off" name="productDescription"
+                        [(ngModel)]="addProductFormsModel.description" #productDescription="ngModel"
+                        required maxlength="10000"> -->
+                    <textarea class="form-control" id="productDescription" placeholder="Product Description"
+                        name="productDescription" [(ngModel)]="addProductFormsModel.description"
+                        #productDescription="ngModel" required maxlength="10000"></textarea>
+                    <div *ngIf="(productDescription.touched || productDescription.dirty) && productDescription.errors?.['required']"
+                        class="alert alert-danger">
+                        Product description is requied
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="productCategoryDDL">Category name:</label>
+                    <select class="form-control" id="productCategoryDDL"
+                        [(ngModel)]="addProductFormsModel.productCategoryId" name="productCategoryDDL"
+                        #productCategoryDDL="ngModel" appValidateSelectOption="-1">
+                        <option *ngFor="let category of productCategoryListAddForm" [value]="category.id">
+                            {{category.categoryName}}
+                        </option>
+                    </select>
+                    <div *ngIf="(productCategoryDDL.touched || productCategoryDDL.dirty) && productCategoryDDL.errors?.['defaultSelected']"
+                        class="alert alert-danger">
+                        Category name is required
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label for="productSubCategoryDDL">Sub Category name:</label>
+                    <select class="form-control" id="productSubCategoryDDL"
+                        [(ngModel)]="addProductFormsModel.productSubCategoryId" name="productSubCategoryDDL"
+                        #productSubCategoryDDL="ngModel" appValidateSelectOption="-1">
+                        <option *ngFor="let subCategory of productSubCategoryListAddForm" [value]="subCategory.id">
+                            {{subCategory.subCategoryName}}
+                        </option>
+                    </select>
+                    <div *ngIf="(productSubCategoryDDL.touched || productSubCategoryDDL.dirty) && productSubCategoryDDL.errors?.['defaultSelected']"
+                        class="alert alert-danger">
+                        Sub category name is required
+                    </div>
+                </div>
+            </div>
+            <button type="submit" [disabled]="!productAddForm.form.valid" class="btn btn-primary">Save</button>
+        </form>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Product name</th>
+                    <th scope="col">Product description</th>
+                    <th scope="col">Category name</th>
+                    <th scope="col">Sub category name</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let productData of productList; index as i">
+                    <th scope="row">{{i + 1}}</th>
+                    <td>{{productData.name}}</td>
+                    <td>{{productData.description}}</td>
+                    <td>{{productData.productCategory.categoryName}}</td>
+                    <td>{{productData.productSubCategory.subCategoryName}}</td>
+                    <td>
+                        <button type="button" class="btn btn-success" data-toggle="modal"
+                            data-target="#productUpdateModal" (click)="getProduct(productData.id)"
+                            style="margin-bottom: 5px;">Update</button>
+                        <button type="button" class="btn btn-danger"
+                            (click)="deleteProduct(productData.id)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Modal -->
+        <div class="modal fade" id="productUpdateModal" tabindex="-1" role="dialog"
+            aria-labelledby="productUpdateModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <form
+                        (ngSubmit)="updateProductSubCategory(editProductFormsModel.id, editProductFormsModel)"
+                        #productEditForm="ngForm">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="productSubCategoryUpdateModalLabel">Update product</h5>
+                            <button #productEditFormCloseButton type="button" class="close"
+                                data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="editProductName">Product name: </label>
+                                    <input type="text" class="form-control" id="editProductName" placeholder="Watch"
+                                        autocomplete="off" name="editProductName" [(ngModel)]="editProductFormsModel.name"
+                                        #editProductName="ngModel" required maxlength="250">
+                                    <div *ngIf="(editProductName.touched || editProductName.dirty) && editProductName.errors?.['required']"
+                                        class="alert alert-danger">
+                                        Product name is requied
+                                    </div>
+                                    <div *ngIf="(editProductName.touched || editProductName.dirty) && editProductName.errors?.['maxlength']"
+                                        class="alert alert-danger">
+                                        Product name must be maximum 250 characters long
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="editProductDescription">Product description: </label>
+                                    <textarea class="form-control" id="editProductDescription"
+                                        placeholder="Product Description" name="editProductDescription"
+                                        [(ngModel)]="editProductFormsModel.description" #editProductDescription="ngModel"
+                                        required maxlength="10000"></textarea>
+                                    <div *ngIf="(editProductDescription.touched || editProductDescription.dirty) && editProductDescription.errors?.['required']"
+                                        class="alert alert-danger">
+                                        Product description is requied
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label for="productCategoryDDL">Category name:</label>
+                                    <select class="form-control" id="editProductCategoryDDL"
+                                        [(ngModel)]="editProductFormsModel.productCategoryId" name="editProductCategoryDDL"
+                                        #editProductCategoryDDL="ngModel" appValidateSelectOption="-1">
+                                        <option *ngFor="let category of productCategoryListAddForm"
+                                            [value]="category.id">
+                                            {{category.categoryName}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="(editProductCategoryDDL.touched || editProductCategoryDDL.dirty) && editProductCategoryDDL.errors?.['defaultSelected']"
+                                        class="alert alert-danger">
+                                        Category name is required
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-6">
+                                    <label for="editProductSubCategoryDDL">Sub Category name:</label>
+                                    <select class="form-control" id="editProductSubCategoryDDL"
+                                        [(ngModel)]="editProductFormsModel.productSubCategoryId"
+                                        name="editProductSubCategoryDDL" #editProductSubCategoryDDL="ngModel"
+                                        appValidateSelectOption="-1">
+                                        <option *ngFor="let subCategory of productSubCategoryListAddForm"
+                                            [value]="subCategory.id">
+                                            {{subCategory.subCategoryName}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="(editProductSubCategoryDDL.touched || editProductSubCategoryDDL.dirty) && editProductSubCategoryDDL.errors?.['defaultSelected']"
+                                        class="alert alert-danger">
+                                        Sub category name is required
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" [disabled]="!productEditForm.form.valid" class="btn btn-primary">Update</button>
+                          </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

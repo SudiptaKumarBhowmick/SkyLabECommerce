@@ -1,4 +1,5 @@
 ﻿using Data.Entities;
+using Data.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
 namespace Data;
@@ -38,7 +39,7 @@ public class ApplicationDBContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.AddInterceptors();
+        optionsBuilder.AddInterceptors(new SoftDeleteInterceptor());
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

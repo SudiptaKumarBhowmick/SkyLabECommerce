@@ -19,6 +19,7 @@ namespace Service.Helpers
             CreateMap<ProductSubCategory, ProductSubCategoryDto>().ReverseMap().ForMember(x => x.Id, opt => opt.Ignore());
             CreateMap<AdminUser, AdminUserDto>().ReverseMap().ForMember(x => x.Id, opt => opt.Ignore());
             CreateMap<Product, ProductDto>().ReverseMap().ForMember(x => x.Id, opt => opt.Ignore());
+            CreateMap<OrderStatus, OrderStatusDto>().ReverseMap().ForMember(x => x.Id, opt => opt.Ignore());
         }
     }
 }

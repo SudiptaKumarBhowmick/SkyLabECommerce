@@ -25,7 +25,7 @@ namespace Data.Interceptors
                     continue;
                 }
 
-                entry.State = EntityState.Deleted;
+                entry.State = EntityState.Modified;
                 delete.IsDeleted = true;
                 delete.DeletedAt = DateTime.Now;
             }
