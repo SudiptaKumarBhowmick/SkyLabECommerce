@@ -37,7 +37,7 @@
                     <label for="productCategoryDDL">Category name:</label>
                     <select class="form-control" id="productCategoryDDL"
                         [(ngModel)]="addProductFormsModel.productCategoryId" name="productCategoryDDL"
-                        #productCategoryDDL="ngModel" appValidateSelectOption="-1">
+                        #productCategoryDDL="ngModel" appValidateSelectOption="-1" (change)="onChangeCategoryDDLAddForm($event)">
                         <option *ngFor="let category of productCategoryListAddForm" [value]="category.id">
                             {{category.categoryName}}
                         </option>
@@ -144,8 +144,8 @@
                                     <label for="productCategoryDDL">Category name:</label>
                                     <select class="form-control" id="editProductCategoryDDL"
                                         [(ngModel)]="editProductFormsModel.productCategoryId" name="editProductCategoryDDL"
-                                        #editProductCategoryDDL="ngModel" appValidateSelectOption="-1">
-                                        <option *ngFor="let category of productCategoryListAddForm"
+                                        #editProductCategoryDDL="ngModel" appValidateSelectOption="-1" (change)="onChangeCategoryDDLEditForm($event)">
+                                        <option *ngFor="let category of productCategoryListEditForm"
                                             [value]="category.id">
                                             {{category.categoryName}}
                                         </option>
@@ -162,7 +162,7 @@
                                         [(ngModel)]="editProductFormsModel.productSubCategoryId"
                                         name="editProductSubCategoryDDL" #editProductSubCategoryDDL="ngModel"
                                         appValidateSelectOption="-1">
-                                        <option *ngFor="let subCategory of productSubCategoryListAddForm"
+                                        <option *ngFor="let subCategory of productSubCategoryListEditForm"
                                             [value]="subCategory.id">
                                             {{subCategory.subCategoryName}}
                                         </option>

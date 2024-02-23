@@ -5,6 +5,7 @@ import { userType } from '../../../_models/userType';
 import { ListResponse } from '../../../_responses/listResponse';
 import { FormsModule, NgForm } from '@angular/forms';
 import { SingleResponse } from '../../../_responses/singleResponse';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-type',
@@ -32,7 +33,7 @@ export class UserTypeComponent {
 
   @ViewChild("userTypeEditFormCloseButton") userTypeEditFormCloseButton!: ElementRef;
 
-  constructor(private genericService: GenericService){
+  constructor(private genericService: GenericService, private _toastr: ToastrService){
 
   }
 
@@ -50,6 +51,7 @@ export class UserTypeComponent {
 
   saveUserType(){
     this.genericService.post<userType>(this.addUserType).subscribe(() => {
+      this._toastr.success('User type added successfully');
       this.resetForms("add");
       this.getAllUserTypes();
     })
@@ -65,6 +67,7 @@ export class UserTypeComponent {
   updateUserType(id: number, userType: userType){
     this.genericService.put<userType>(id, userType).subscribe(() => {
       this.userTypeEditFormCloseButton.nativeElement.click();
+      this._toastr.success('User type updated successfully');
       this.resetForms("edit");
       this.getAllUserTypes();
     })
@@ -72,6 +75,7 @@ export class UserTypeComponent {
 
   deleteUserType(id: number){
     this.genericService.delete(id).subscribe(result => {
+      this._toastr.warning('User type deleted successfully');
       this.getAllUserTypes();
     })
   }

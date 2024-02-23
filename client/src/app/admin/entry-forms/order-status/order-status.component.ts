@@ -5,6 +5,7 @@ import { orderStatus } from '../../../_models/orderStatus';
 import { GenericService } from '../../../_services/generic.service';
 import { ListResponse } from '../../../_responses/listResponse';
 import { SingleResponse } from '../../../_responses/singleResponse';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-order-status',
@@ -36,7 +37,7 @@ export class OrderStatusComponent {
 
   @ViewChild("orderStatusEditFormCloseButton") orderStatusEditFormCloseButton!: ElementRef;
 
-  constructor(private genericService: GenericService){
+  constructor(private genericService: GenericService, private _toastr: ToastrService){
     
   }
 
@@ -54,6 +55,7 @@ export class OrderStatusComponent {
 
   saveOrderStatus(){
     this.genericService.post<orderStatus>(this.addOrderStatus).subscribe(() => {
+      this._toastr.success('Order status added successfully');
       this.resetForms("add");
       this.getAllOrderStatus();
     })
@@ -68,6 +70,7 @@ export class OrderStatusComponent {
 
   updateOrderStatus(id: number, orderStatus: orderStatus){
     this.genericService.put<orderStatus>(id, orderStatus).subscribe(() => {
+      this._toastr.success('Order status updated successfully');
       this.orderStatusEditFormCloseButton.nativeElement.click();
       this.resetForms("edit");
       this.getAllOrderStatus();
@@ -76,6 +79,7 @@ export class OrderStatusComponent {
 
   deleteOrderStatus(id: number){
     this.genericService.delete(id).subscribe(result => {
+      this._toastr.warning('Order status deleted successfully');
       this.getAllOrderStatus();
     })
   }

@@ -1,4 +1,5 @@
-﻿using Data.Entities;
+﻿using Data.DTOs;
+using Data.Entities;
 using Service.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -10,5 +11,6 @@ namespace Data.Interfaces
 {
     public interface IProductSubCategoryRepository : IGenericRepository<ProductSubCategory>
     {
+        Task<IEnumerable<ProductSubCategory>> GetSubCategoryByCategory(int categoryId);
     }
 }

@@ -35,7 +35,9 @@ namespace Service.Helpers
                 {
                     var uploadParams = new ImageUploadParams()
                     {
-                        File = new FileDescription(file.Name, stream)
+                        File = new FileDescription(file.Name, stream),
+                        Folder = "/SkyLabECommerceProducts",
+                        Transformation = new Transformation().Height(600).Width(400).Crop("fit")
                     };
 
                     uploadResult = await _cloudinary.UploadAsync(uploadParams);
@@ -52,8 +54,6 @@ namespace Service.Helpers
             };
 
             return dataToReturn;
-
-            //https://medium.com/@karakizleyligul/how-to-upload-image-cloudinary-asp-net-core-e47023ff2431
         }
     }
 }

@@ -9,6 +9,7 @@ import { SingleResponse } from '../../../_responses/singleResponse';
 import { EmailPatternDirective } from '../../../_directives/email-pattern.directive';
 import { PasswordPatternDirective } from '../../../_directives/password-pattern.directive';
 import { ValidateSelectOptionDirective } from '../../../_directives/validate-select-option.directive';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-user',
@@ -57,7 +58,7 @@ export class AdminUserComponent {
 
   @ViewChild("adminUserEditFormCloseButton") adminUserEditFormCloseButton!: ElementRef;
 
-  constructor(private genericService: GenericService){
+  constructor(private genericService: GenericService, private _toastr: ToastrService){
 
   }
 
@@ -96,6 +97,7 @@ export class AdminUserComponent {
   saveAdminUser(){
     this.genericService.controllerName = "AdminUser";
     this.genericService.post<adminUser>(this.addAdminUserModel).subscribe(() => {
+      this._toastr.success('Admin user added successfully');
       this.getAllAdminUser();
       this.resetForms("add");
     })
@@ -111,6 +113,7 @@ export class AdminUserComponent {
 
   updateAdminUser(id: number, adminUser: adminUser){
     this.genericService.put<adminUser>(id, adminUser).subscribe(() => {
+      this._toastr.success('Admin user updated successfully');
       this.adminUserEditFormCloseButton.nativeElement.click();
       this.resetForms("edit");
       this.getAllAdminUser();
@@ -119,6 +122,7 @@ export class AdminUserComponent {
 
   deleteAdminUser(id: number){
     this.genericService.delete(id).subscribe(result => {
+      this._toastr.warning('Admin user deleted successfully');
       this.getAllAdminUser();
     })
   }

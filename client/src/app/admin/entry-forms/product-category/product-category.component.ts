@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { GenericService } from '../../../_services/generic.service';
 import { ListResponse } from '../../../_responses/listResponse';
 import { SingleResponse } from '../../../_responses/singleResponse';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-category',
@@ -33,7 +34,7 @@ export class ProductCategoryComponent {
 
   @ViewChild("productCategoryEditFormCloseButton") productCategoryEditFormCloseButton!: ElementRef;
 
-  constructor(private genericService: GenericService){
+  constructor(private genericService: GenericService, private _toastr: ToastrService){
     
   }
 
@@ -51,6 +52,7 @@ export class ProductCategoryComponent {
 
   saveProductCategory(){
     this.genericService.post<productCategory>(this.addProductCategoryFormsModel).subscribe(() => {
+      this._toastr.success('Product category added successfully');
       this.resetForms("add");
       this.getAllProductCategories();
     })
@@ -63,8 +65,9 @@ export class ProductCategoryComponent {
     })
   }
 
-  productCategoryUpdateModal(id: number, category: productCategory){
+  updateProductCategory(id: number, category: productCategory){
     this.genericService.put<productCategory>(id, category).subscribe(() => {
+      this._toastr.success('Product category updated successfully');
       this.productCategoryEditFormCloseButton.nativeElement.click();
       this.resetForms("edit");
       this.getAllProductCategories();
@@ -73,6 +76,7 @@ export class ProductCategoryComponent {
 
   deleteProductCategory(id: number){
     this.genericService.delete(id).subscribe(result => {
+      this._toastr.warning('Product category deleted successfully');
       this.getAllProductCategories();
     })
   }

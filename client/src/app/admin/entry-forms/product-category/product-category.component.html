@@ -48,7 +48,7 @@
       aria-labelledby="productCategoryUpdateModal" aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-          <form (ngSubmit)="productCategoryUpdateModal(editProductCategoryFormsModel.id, editProductCategoryFormsModel)"
+          <form (ngSubmit)="updateProductCategory(editProductCategoryFormsModel.id, editProductCategoryFormsModel)"
             #productCategoryEditForm="ngForm">
             <div class="modal-header">
               <h5 class="modal-title" id="productCategoryUpdateModalLabel">Update Product Category</h5>

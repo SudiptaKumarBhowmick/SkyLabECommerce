@@ -90,5 +90,17 @@ namespace API.Controllers
             response.Model = _unitOfWork.Save();
             return response.ToHttpDeletedResponse();
         }
+
+        [HttpGet("GetSubCategoryByCategory/{categoryId}")]
+        public async Task<IActionResult> GetSubCategoryByCategory(int categoryId)
+        {
+            var subCategories = await _unitOfWork.ProductSubCategoryRepository.GetSubCategoryByCategory(categoryId);
+
+            var returnData = _mapper.Map<IEnumerable<ProductSubCategoryDto>>(subCategories);
+
+            var response = new ListResponseModel<ProductSubCategoryDto>();
+            response.Model = returnData;
+            return response.ToHttpListResponse();
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Data.Entities;
+﻿using Data.DTOs;
+using Data.Entities;
 using Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -19,6 +20,11 @@ namespace Data.Repositories
         public async override Task<IEnumerable<ProductSubCategory>> GetAllAsync()
         {
             return await _applicationDBContext.ProductSubCategory.Include(entity => entity.ProductCategory).ToListAsync();
+        }
+
+        public async Task<IEnumerable<ProductSubCategory>> GetSubCategoryByCategory(int categoryId)
+        {
+            return await _applicationDBContext.ProductSubCategory.Where(subCategory => subCategory.ProductCategoryId.Equals(categoryId)).ToListAsync();
         }
     }
 }

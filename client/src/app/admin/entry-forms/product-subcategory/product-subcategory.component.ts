@@ -7,6 +7,7 @@ import { productCategory } from '../../../_models/productCategory';
 import { ListResponse } from '../../../_responses/listResponse';
 import { ValidateSelectOptionDirective } from '../../../_directives/validate-select-option.directive';
 import { SingleResponse } from '../../../_responses/singleResponse';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-product-subcategory',
@@ -49,7 +50,7 @@ export class ProductSubcategoryComponent {
 
   @ViewChild("productSubCategoryEditFormCloseButton") productSubCategoryEditFormCloseButton!: ElementRef;
   
-  constructor(private genericService: GenericService){
+  constructor(private genericService: GenericService, private _toastr: ToastrService){
 
   }
 
@@ -88,6 +89,7 @@ export class ProductSubcategoryComponent {
   saveProductSubCategory(){
     this.genericService.controllerName = "ProductSubCategory";
     this.genericService.post<productSubCategory>(this.addProductSubCategoryFormsModel).subscribe(() => {
+      this._toastr.success('Product sub-category added successfully');
       this.getAllProductSubCategories();
       this.resetForms("add");
     })
@@ -104,6 +106,7 @@ export class ProductSubcategoryComponent {
   updateProductSubCategory(id: number, productSubCategory: productSubCategory){
     this.genericService.controllerName = "ProductSubCategory";
     this.genericService.put<productSubCategory>(id, productSubCategory).subscribe(() => {
+      this._toastr.success('Product sub-category updated successfully');
       this.productSubCategoryEditFormCloseButton.nativeElement.click();
       this.resetForms("edit");
       this.getAllProductSubCategories();
@@ -113,6 +116,7 @@ export class ProductSubcategoryComponent {
   deleteProductSubCategory(id: number){
     this.genericService.controllerName = "ProductSubCategory";
     this.genericService.delete(id).subscribe(result => {
+      this._toastr.warning('Product sub-category deleted successfully');
       this.getAllProductSubCategories();
     })
   }
