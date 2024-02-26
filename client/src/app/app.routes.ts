@@ -7,6 +7,7 @@ import { ProductCategoryComponent } from './admin/entry-forms/product-category/p
 import { ProductSubcategoryComponent } from './admin/entry-forms/product-subcategory/product-subcategory.component';
 import { ProductComponent } from './admin/entry-forms/product/product.component';
 import { OrderStatusComponent } from './admin/entry-forms/order-status/order-status.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
@@ -21,5 +22,6 @@ export const routes: Routes = [
             {path: 'admin/product', component: ProductComponent},
             {path: 'admin/order-status', component: OrderStatusComponent}
         ]
-    } 
+    },
+    {path: '**', component: NotFoundComponent, pathMatch: 'full'}
 ];

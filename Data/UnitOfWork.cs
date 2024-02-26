@@ -23,7 +23,8 @@ namespace Data
             IProductRepository Product,
             IProductSubCategoryRepository ProductSubCategory,
             IUserRepository User,
-            IUserTypeRepository UserType)
+            IUserTypeRepository UserType,
+            IAccountRepository Account)
         {
             _applicationDBContext = applicationDBContext;
             //AdminUserRepository = new AdminUserRepository(_applicationDBContext);
@@ -45,6 +46,8 @@ namespace Data
             ProductSubCategoryRepository = ProductSubCategory;
             UserRepository = User;
             UserTypeRepository = UserType;
+            AccountRepository = Account;
+
         }
 
         public IAdminUserRepository AdminUserRepository 
@@ -88,6 +91,11 @@ namespace Data
         }
 
         public IUserTypeRepository UserTypeRepository
+        {
+            get;
+        }
+
+        public IAccountRepository AccountRepository
         {
             get;
         }

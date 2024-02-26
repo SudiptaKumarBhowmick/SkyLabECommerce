@@ -19,6 +19,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.ModelStateValidationService();
 
+builder.Services.AddAuthenticationUsingJwtToken(builder.Configuration);
+builder.Services.AddAuthorization();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -34,6 +37,8 @@ app.UseMiddleware<ExceptionMiddleware>();
 app.UseHttpsRedirection();
 
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().AllowCredentials().WithOrigins("http://localhost:4200"));
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

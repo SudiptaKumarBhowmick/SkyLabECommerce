@@ -20,6 +20,11 @@ namespace Service.Helpers
             CreateMap<AdminUser, AdminUserDto>().ReverseMap().ForMember(x => x.Id, opt => opt.Ignore());
             CreateMap<Product, ProductDto>().ReverseMap().ForMember(x => x.Id, opt => opt.Ignore());
             CreateMap<OrderStatus, OrderStatusDto>().ReverseMap().ForMember(x => x.Id, opt => opt.Ignore());
+            CreateMap<User, UserDto>().ReverseMap().ForMember(x => x.Id, opt => opt.Ignore());
+            CreateMap<User, UserTokenGenerationInformation>().ReverseMap().ForMember(x => x.Id, opt => opt.Ignore());
+            CreateMap<User, UserRegisterDto>().ReverseMap().ForMember(x => x.Id, opt => opt.Ignore())
+                .ForMember(x => x.UserName, opt => opt.AddTransform(x => x.ToLower()))
+                .ForMember(x => x.UserEmail, opt => opt.AddTransform(x => x.ToLower()));
         }
     }
 }

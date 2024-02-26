@@ -39,6 +39,8 @@ namespace Service.Extensions
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductSubCategoryRepository, ProductSubCategoryRepository>();
             services.AddScoped<ICloudinaryFileManager, CloudinaryFileManager>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
 
             return services;
         }

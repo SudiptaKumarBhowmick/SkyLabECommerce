@@ -18,6 +18,7 @@ namespace Data.Interfaces
         IProductSubCategoryRepository ProductSubCategoryRepository { get; }
         IUserRepository UserRepository { get; }
         IUserTypeRepository UserTypeRepository { get; }
+        IAccountRepository AccountRepository { get; }
         int Save();
     }
 }
