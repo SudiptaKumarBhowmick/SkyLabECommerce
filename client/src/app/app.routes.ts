@@ -8,9 +8,11 @@ import { ProductSubcategoryComponent } from './admin/entry-forms/product-subcate
 import { ProductComponent } from './admin/entry-forms/product/product.component';
 import { OrderStatusComponent } from './admin/entry-forms/order-status/order-status.component';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { UserAuthComponent } from './user-auth/user-auth.component';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
+    {path: 'user-auth', component: UserAuthComponent},
     {
         path: '',
         children: [

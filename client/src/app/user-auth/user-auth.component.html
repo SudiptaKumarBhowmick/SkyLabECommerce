@@ -1,0 +1,17 @@
+<div class="content-wrapper">
+    <div class="content">
+        <button (click)="openModal()">Open Modal</button>
+    </div>
+</div>
+
+<app-custom-modal *ngIf="modalOpen$ | async">
+    <div class="modal-header">
+        Modal Header
+    </div>
+    <div class="modal-body">
+        <p>Modal Content</p>
+    </div>
+    <div class="modal-footer">
+        <button (click)="closeModal()">Close modal</button>
+    </div>
+</app-custom-modal>
