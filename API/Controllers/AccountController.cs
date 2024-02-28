@@ -122,5 +122,39 @@ namespace API.Controllers
             response.Model = userDto;
             return response.ToHttpResponse();
         }
+
+        [HttpPost("admin/login")]
+        public async Task<IActionResult> AdminLogin([FromBody] LoginDto loginDto)
+        {
+            var errorResponse = new ResponseModel();
+
+            if (string.IsNullOrEmpty(loginDto.Email))
+            {
+                errorResponse.Message = "Email is required!!";
+                return errorResponse.ToHttpErrorResponse();
+            }
+            else if (string.IsNullOrEmpty(loginDto.Password))
+            {
+                errorResponse.Message = "Password is required!!";
+                return errorResponse.ToHttpErrorResponse();
+            }
+            else
+            {
+                var loggedInUser = await _unitOfWork.AccountRepository.AdminLogin(loginDto);
+                if (loggedInUser != null)
+                {
+                    loggedInUser.Token = _tokenService.CreateToken(_mapper.Map<UserTokenGenerationInformation>(loggedInUser));
+
+                    var response = new SingleResponseModel<AdminUserLoginDto>();
+                    response.Model = loggedInUser;
+                    return response.ToHttpResponse();
+                }
+                else
+                {
+                    errorResponse.Message = "Incorrect email or password!!";
+                    return errorResponse.ToHttpErrorResponse();
+                }
+            }
+        }
     }
 }

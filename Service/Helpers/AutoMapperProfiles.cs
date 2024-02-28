@@ -25,6 +25,7 @@ namespace Service.Helpers
             CreateMap<User, UserRegisterDto>().ReverseMap().ForMember(x => x.Id, opt => opt.Ignore())
                 .ForMember(x => x.UserName, opt => opt.AddTransform(x => x.ToLower()))
                 .ForMember(x => x.UserEmail, opt => opt.AddTransform(x => x.ToLower()));
+            CreateMap<AdminUserLoginDto, UserTokenGenerationInformation>().ReverseMap().ForMember(x => x.Id, opt => opt.Ignore());
         }
     }
 }
