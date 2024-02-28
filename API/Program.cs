@@ -15,7 +15,7 @@ builder.Services.AddDatabaseContext(builder.Configuration).AddConfig().AddMyDepe
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGenService();
 
 builder.Services.ModelStateValidationService();
 

@@ -124,15 +124,27 @@
         <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
       </div>
     </li>
-    <li class="nav-item">
+    <li class="nav-item" *ngIf="!(isUserLoggedIn$| async)">
       <!-- <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
           <i class="fas fa-user-circle"></i>
         </a> -->
-      <button type="button" class="btn btn-info nav-link" data-widget="control-sidebar" data-slide="true"
-        (click)="openModal()">
+      <button type="button" class="btn btn-info nav-link" (click)="openModal()">
         <i class="fas fa-user-circle" style="color: white;"> Login</i>
-
       </button>
+    </li>
+    <li class="nav-item dropdown" *ngIf="isUserLoggedIn$ | async">
+      <button type="button" class="btn btn-outline-info" data-toggle="dropdown" href="#">
+        <i class="fas fa-user-circle"> {{userName}} </i>
+      </button>
+      <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
+        <a href="#" class="dropdown-item">
+          <span style="text-align: center;" (click)="Logout()">Logout</span>
+        </a>
+        <div class="dropdown-divider"></div>
+        <a href="#" class="dropdown-item">
+          <span style="text-align: center;">Profile</span>
+        </a>
+      </div>
     </li>
   </ul>
 </nav>
@@ -145,15 +157,156 @@
   <div class="modal-body">
     <ul class="nav nav-tabs" id="authTab" role="tablist">
       <li class="nav-item">
-        <a class="nav-link active" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login" aria-selected="true">Login</a>
+        <a class="nav-link active" id="login-tab" data-toggle="tab" href="#login" role="tab" aria-controls="login"
+          aria-selected="true">Login</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="signup-tab" data-toggle="tab" href="#signup" role="tab" aria-controls="signup" aria-selected="false">Sign Up</a>
+        <a class="nav-link" id="signup-tab" data-toggle="tab" href="#signup" role="tab" aria-controls="signup"
+          aria-selected="false">Sign Up</a>
       </li>
     </ul>
     <div class="tab-content" id="authTabContent">
-      <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">Login Form</div>
-      <div class="tab-pane fade" id="signup" role="tabpanel" aria-labelledby="signup-tab">Sign Up Form</div>
+      <div class="tab-pane fade show active" id="login" role="tabpanel" aria-labelledby="login-tab">
+        <!-- Login form -->
+        <form class="form" (ngSubmit)="login()" #loginForm="ngForm">
+          <div class="form-row">
+            <div class="form-group col-md-12 col-sm-12">
+              <input type="text" class="form-control" id="loginFormUserNameOrEmail" placeholder="email or username"
+                autocomplete="off" name="loginFormUserNameOrEmail"
+                [(ngModel)]="userLoginFormModel.loginFormUserNameOrEmail" #loginFormUserNameOrEmail="ngModel" required
+                minlength="3" maxlength="250">
+              <div
+                *ngIf="(loginFormUserNameOrEmail.touched || loginFormUserNameOrEmail.dirty) && loginFormUserNameOrEmail.errors?.['required']"
+                class="alert alert-danger">
+                Username or email is requied
+              </div>
+              <div
+                *ngIf="(loginFormUserNameOrEmail.touched || loginFormUserNameOrEmail.dirty) && loginFormUserNameOrEmail.errors?.['minlength']"
+                class="alert alert-danger">
+                Must be minimum 3 characters long
+              </div>
+              <div
+                *ngIf="(loginFormUserNameOrEmail.touched || loginFormUserNameOrEmail.dirty) && loginFormUserNameOrEmail.errors?.['maxlength']"
+                class="alert alert-danger">
+                Must be maximum 50 characters long
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-12 col-sm-12">
+              <label for="userPassword">Password: </label>
+              <input type="password" class="form-control" id="loginFormPassword" placeholder="********"
+                autocomplete="off" name="loginFormPassword" [(ngModel)]="userLoginFormModel.loginFormPassword"
+                #loginFormPassword="ngModel" minlength="8" maxlength="20" required>
+              <div
+                *ngIf="(loginFormPassword.touched || loginFormPassword.dirty) && loginFormPassword.errors?.['required']"
+                class="alert alert-danger">
+                Password is requied
+              </div>
+              <div
+                *ngIf="(loginFormPassword.touched || loginFormPassword.dirty) && loginFormPassword.errors?.['minlength']"
+                class="alert alert-danger">
+                Password must be minimum 8 characters long
+              </div>
+              <div
+                *ngIf="(loginFormPassword.touched || loginFormPassword.dirty) && loginFormPassword.errors?.['maxlength']"
+                class="alert alert-danger">
+                Password must be maximum 20 characters long
+              </div>
+            </div>
+          </div>
+          <button type="submit" [disabled]="!loginForm.form.valid" class="btn btn-primary">Login</button>
+        </form>
+        <!-- Login form end -->
+      </div>
+
+      <div class="tab-pane fade" id="signup" role="tabpanel" aria-labelledby="signup-tab">
+        <!-- Registration form -->
+        <form class="form" (ngSubmit)="register()" #registrationForm="ngForm">
+          <div class="form-row">
+            <div class="form-group col-md-12 col-sm-12">
+              <input type="text" class="form-control" id="registerFormUserName" placeholder="johndoe" autocomplete="off"
+                name="registerFormUserName" [(ngModel)]="userRegistrationFormModel.userName"
+                #registerFormUserName="ngModel" required minlength="3" maxlength="50">
+              <div
+                *ngIf="(registerFormUserName.touched || registerFormUserName.dirty) && registerFormUserName.errors?.['required']"
+                class="alert alert-danger">
+                Username is requied
+              </div>
+              <div
+                *ngIf="(registerFormUserName.touched || registerFormUserName.dirty) && registerFormUserName.errors?.['minlength']"
+                class="alert alert-danger">
+                Must be minimum 3 characters long
+              </div>
+              <div
+                *ngIf="(registerFormUserName.touched || registerFormUserName.dirty) && registerFormUserName.errors?.['maxlength']"
+                class="alert alert-danger">
+                Must be maximum 50 characters long
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-12 col-sm-12">
+              <label for="userPassword">Password: </label>
+              <input type="password" class="form-control" id="registerFormPassword" placeholder="********"
+                autocomplete="off" name="registerFormPassword" [(ngModel)]="userRegistrationFormModel.password"
+                #registerFormPassword="ngModel" minlength="8" maxlength="20" appPasswordPattern required>
+              <div
+                *ngIf="(registerFormPassword.touched || registerFormPassword.dirty) && registerFormPassword.errors?.['required']"
+                class="alert alert-danger">
+                Password is requied
+              </div>
+              <div
+                *ngIf="(registerFormPassword.touched || registerFormPassword.dirty)  && registerFormPassword.errors?.['invalidPassword']"
+                class="alert alert-danger">
+                Password must contain one lowercase alphabet, uppercase alphabet, numeric digit and special character
+              </div>
+              <div
+                *ngIf="(registerFormPassword.touched || registerFormPassword.dirty) && registerFormPassword.errors?.['minlength']"
+                class="alert alert-danger">
+                Password must be minimum 8 characters long
+              </div>
+              <div
+                *ngIf="(registerFormPassword.touched || registerFormPassword.dirty) && registerFormPassword.errors?.['maxlength']"
+                class="alert alert-danger">
+                Password must be maximum 20 characters long
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label for="userEmail">Email: </label>
+              <input type="text" class="form-control" id="registerFormEmail" placeholder="johndoe@email.com"
+                autocomplete="off" name="registerFormEmail" [(ngModel)]="userRegistrationFormModel.userEmail"
+                #registerFormEmail="ngModel" appEmailPattern maxlength="150">
+              <div
+                *ngIf="(registerFormEmail.touched || registerFormEmail.dirty) && registerFormEmail.errors?.['invalidEmail']"
+                class="alert alert-danger">
+                Enter a valid email
+              </div>
+              <div
+                *ngIf="(registerFormEmail.touched || registerFormEmail.dirty) && registerFormEmail.errors?.['maxlength']"
+                class="alert alert-danger">
+                Email must be maximum 150 characters long
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-12 col-sm-12">
+              <label for="userPassword">Mobile: </label>
+              <input type="password" class="form-control" id="registerFormMobile" placeholder="01793333333"
+                autocomplete="off" name="registerFormMobile" [(ngModel)]="userRegistrationFormModel.mobile"
+                #registerFormMobile="ngModel" minlength="8" maxlength="20">
+            </div>
+          </div>
+          <button type="submit" [disabled]="!registrationForm.form.valid" class="btn btn-primary">Sign Up</button>
+        </form>
+        <!-- Registration form end -->
+      </div>
     </div>
   </div>
   <div class="modal-footer">

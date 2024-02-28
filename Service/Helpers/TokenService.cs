@@ -34,7 +34,7 @@ namespace Service.Helpers
                     new Claim(JwtRegisteredClaimNames.Email, user.UserEmail),
                     new Claim(JwtRegisteredClaimNames.Jti, user.Id.ToString())
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(5),
+                Expires = DateTime.UtcNow.AddDays(1),
                 Issuer = issuer,
                 Audience = audience,
                 SigningCredentials = new SigningCredentials(
