@@ -11,6 +11,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { UserAuthComponent } from './user-auth/user-auth.component';
 import { AdminLoginComponent } from './admin/admin-login/admin-login.component';
 import { adminAuthGuard } from './_guards/admin-auth.guard';
+import { UploadProductImageComponent } from './admin/entry-forms/upload-product-image/upload-product-image.component';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
@@ -27,7 +28,8 @@ export const routes: Routes = [
             {path: 'admin/category', component: ProductCategoryComponent},
             {path: 'admin/sub-category', component: ProductSubcategoryComponent},
             {path: 'admin/product', component: ProductComponent},
-            {path: 'admin/order-status', component: OrderStatusComponent}
+            {path: 'admin/order-status', component: OrderStatusComponent},
+            {path: 'admin/upload-product-image', component: UploadProductImageComponent}
         ]
     },
     {path: '**', component: NotFoundComponent, pathMatch: 'full'}

@@ -1,0 +1,49 @@
+<div class="content-wrapper">
+    <div class="content">
+        <form class="form" (ngSubmit)="uploadAndSaveProductImage()" #productImageUploadForm="ngForm">
+            <div class="form-row">
+
+
+                <div class="form-group col-md-6">
+                    <label for="productImageFile-input">Product Image: </label>
+                    <!-- <input type="text" class="form-control" id="productImage" placeholder="johndoe" autocomplete="off" name="userName"
+                  [(ngModel)]="addAdminUserModel.userName" #userName="ngModel" required minlength="3" maxlength="50"> -->
+                    <input type="file" class="form-control productImageFile-input" id="productImageFile-input"
+                        (change)="onFileSelectedForProductImage($event)" #productImageFileUpload name="productImageFile-input"
+                         required> <!-- [(ngModel)]="uploadProductImageAddFormModel.file" -->
+                    <div class="productImageFileUploadDisplay">
+
+                        {{fileName || "No file uploaded yet."}}
+
+                        <button class="btn btn-outline-info productImageUploadBtn" (click)="productImageFileUpload.click()">
+                            <i class="fas fa-paperclip"></i>
+                        </button>
+                    </div>
+                </div>
+
+
+                <div class="form-group col-md-6">
+                    <label for="productNameDDL">Product Name:</label>
+                    <select class="form-control" id="productNameDDL" [(ngModel)]="uploadProductImageAddFormModel.productId"
+                        name="productNameDDL" #productNameDDL="ngModel" appValidateSelectOption="-1">
+                        <option *ngFor="let productData of productListAddForm" [value]="productData.id">{{productData.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="isMainImage">Is Main: </label>
+                    <!-- <input type="password" class="form-control" id="userPassword" placeholder="********"
+                        autocomplete="off" name="userPassword" [(ngModel)]="addAdminUserModel.password"
+                        #userPassword="ngModel" appPasswordPattern minlength="8" maxlength="20" required> -->
+                    <input type="checkbox" [(ngModel)]="uploadProductImageAddFormModel.isMain"
+                    class="form-control" id="isMainImage" name="isMainImage"
+                    #isMainImage="ngModel" style="width: 5%;">
+                </div>
+            </div>
+            <button type="submit" [disabled]="!productImageUploadForm.form.valid" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+</div>
