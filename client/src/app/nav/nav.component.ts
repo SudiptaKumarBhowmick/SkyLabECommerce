@@ -75,7 +75,6 @@ export class NavComponent {
   login(){
     const emailRegex = RegExp(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,10}$/);
     const isEmail = emailRegex.test(this.userLoginFormModel.loginFormUserNameOrEmail);
-    console.log(isEmail);
 
     if(isEmail){
       this.userLoginDataModel.email = this.userLoginFormModel.loginFormUserNameOrEmail;

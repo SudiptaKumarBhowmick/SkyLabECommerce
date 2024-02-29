@@ -55,12 +55,12 @@ namespace Data.Repositories
             return await _applicationDBContext.User.AnyAsync(user => user.UserName.Equals(username));
         }
 
-        public async Task<AdminUserLoginDto?> AdminLogin(LoginDto loginDto)
+        public async Task<AdminUserLoginDto?> AdminLogin(AdminUserLoginDto loginDto)
         {
             var data = await (from adminUser in _applicationDBContext.AdminUser
                             join userType in _applicationDBContext.UserType
                             on adminUser.UserTypeId equals userType.Id
-                            where adminUser.UserEmail == loginDto.Email
+                            where adminUser.UserEmail == loginDto.UserEmail
                             select new AdminUserLoginDto()
                             {
                                 Id = adminUser.Id,

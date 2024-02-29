@@ -124,11 +124,11 @@ namespace API.Controllers
         }
 
         [HttpPost("admin/login")]
-        public async Task<IActionResult> AdminLogin([FromBody] LoginDto loginDto)
+        public async Task<IActionResult> AdminLogin([FromBody] AdminUserLoginDto loginDto)
         {
             var errorResponse = new ResponseModel();
 
-            if (string.IsNullOrEmpty(loginDto.Email))
+            if (string.IsNullOrEmpty(loginDto.UserEmail))
             {
                 errorResponse.Message = "Email is required!!";
                 return errorResponse.ToHttpErrorResponse();

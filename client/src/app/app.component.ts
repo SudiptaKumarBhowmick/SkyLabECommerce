@@ -6,6 +6,7 @@ import { AdminSidebarComponent } from "./admin/admin-sidebar/admin-sidebar.compo
 import { AdminFooterComponent } from "./admin/admin-footer/admin-footer.component";
 import { NavComponent } from "./nav/nav.component";
 import { SidebarComponent } from "./sidebar/sidebar.component";
+import { AccountService } from './_services/account.service';
 //import { Router } from 'express';
 
 @Component({
@@ -20,12 +21,18 @@ export class AppComponent {
   currentUrl : string = "";
   isAdmin : boolean = false;
 
-
-  constructor(private router: Router){
+  constructor(private router: Router, public accountService: AccountService){
     
   }
 
+  isLoggedIn$ = this.accountService.isAdminUserLoggedIn$;
+
   ngOnInit(){
+    this.checkIsAdminComponent();
+    this.checkAuthAdmin();
+  }
+
+  checkIsAdminComponent(){
     this.router.events.subscribe((e) => {
       if(e instanceof NavigationEnd){
         this.currentUrl = e.url;
@@ -34,5 +41,14 @@ export class AppComponent {
         }
       }
     })
+  }
+
+  checkAuthAdmin(){
+    var adminUserSession = sessionStorage.getItem('admin');
+    if(adminUserSession != null){
+      this.accountService.changeAdminUserLoginStatus(true);
+      //var userSessionData = JSON.parse(userSession);
+      //this.userName = userSessionData.userName;
+    }
   }
 }

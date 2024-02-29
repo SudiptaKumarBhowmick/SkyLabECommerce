@@ -14,6 +14,6 @@ namespace Data.Interfaces
         Task<bool> IsEmailExists(string email);
         Task CreateUserAsync(User user);
         Task<User?> IsUserExists(bool isUserName, LoginDto loginDto);
-        Task<AdminUserLoginDto?> AdminLogin(LoginDto loginDto);
+        Task<AdminUserLoginDto?> AdminLogin(AdminUserLoginDto loginDto);
     }
 }

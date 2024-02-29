@@ -9,12 +9,17 @@ import { ProductComponent } from './admin/entry-forms/product/product.component'
 import { OrderStatusComponent } from './admin/entry-forms/order-status/order-status.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { UserAuthComponent } from './user-auth/user-auth.component';
+import { AdminLoginComponent } from './admin/admin-login/admin-login.component';
+import { adminAuthGuard } from './_guards/admin-auth.guard';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
     {path: 'user-auth', component: UserAuthComponent},
+    {path: 'admin/login', component: AdminLoginComponent},
     {
         path: '',
+        runGuardsAndResolvers: 'always',
+        canActivate: [adminAuthGuard],
         children: [
             {path: 'admin', component: AdminDashboardComponent},
             {path: 'admin/user-type', component: UserTypeComponent},

@@ -1,6 +1,8 @@
 <div *ngIf = "isAdmin; else elseBlock">
-    <app-admin-header></app-admin-header>
-    <app-admin-sidebar></app-admin-sidebar>
+    <div *ngIf="isLoggedIn$ | async">
+        <app-admin-header></app-admin-header>
+        <app-admin-sidebar></app-admin-sidebar>
+    </div>
 </div>
 <ng-template #elseBlock>
     <app-nav></app-nav>
