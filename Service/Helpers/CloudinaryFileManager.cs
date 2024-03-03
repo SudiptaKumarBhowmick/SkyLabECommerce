@@ -55,5 +55,19 @@ namespace Service.Helpers
 
             return dataToReturn;
         }
+
+        public bool DeleteProductImage(string publicId)
+        {
+            var deletionParams = new DeletionParams(publicId);
+
+            var result = _cloudinary.Destroy(deletionParams);
+
+            if (result != null)
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

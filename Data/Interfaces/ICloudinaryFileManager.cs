@@ -11,5 +11,6 @@ namespace Data.Interfaces
     public interface ICloudinaryFileManager
     {
         Task<ProductImage> AddProductImage(ProductImageDto productImageDto);
+        bool DeleteProductImage(string publicId);
     }
 }

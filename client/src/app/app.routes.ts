@@ -10,13 +10,13 @@ import { OrderStatusComponent } from './admin/entry-forms/order-status/order-sta
 import { NotFoundComponent } from './not-found/not-found.component';
 import { UserAuthComponent } from './user-auth/user-auth.component';
 import { AdminLoginComponent } from './admin/admin-login/admin-login.component';
-import { adminAuthGuard } from './_guards/admin-auth.guard';
+import { adminAuthGuard, adminAuthRedirectGuard } from './_guards/admin-auth.guard';
 import { UploadProductImageComponent } from './admin/entry-forms/upload-product-image/upload-product-image.component';
 
 export const routes: Routes = [
     {path: '', component: HomeComponent},
     {path: 'user-auth', component: UserAuthComponent},
-    {path: 'admin/login', component: AdminLoginComponent},
+    {path: 'admin/login', component: AdminLoginComponent, canActivate: [adminAuthRedirectGuard]},
     {
         path: '',
         runGuardsAndResolvers: 'always',

@@ -5,11 +5,11 @@
 
 
                 <div class="form-group col-md-6">
-                    <label for="productImageFile-input">Product Image: </label>
+                    <label for="productImageFileInput">Product Image: </label>
                     <!-- <input type="text" class="form-control" id="productImage" placeholder="johndoe" autocomplete="off" name="userName"
                   [(ngModel)]="addAdminUserModel.userName" #userName="ngModel" required minlength="3" maxlength="50"> -->
-                    <input type="file" class="form-control productImageFile-input" id="productImageFile-input"
-                        (change)="onFileSelectedForProductImage($event)" #productImageFileUpload name="productImageFile-input"
+                    <input type="file" class="form-control productImageFileInput" id="productImageFileInput"
+                        (change)="onFileSelectedForProductImage($event)" #productImageFileUpload name="productImageFileInput"
                          required> <!-- [(ngModel)]="uploadProductImageAddFormModel.file" -->
                     <div class="productImageFileUploadDisplay">
 
@@ -45,5 +45,32 @@
             </div>
             <button type="submit" [disabled]="!productImageUploadForm.form.valid" class="btn btn-primary">Save</button>
         </form>
+
+        <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Image</th>
+                <th scope="col">Product Name</th>
+                <th scope="col">Is Main</th>
+                <th scope="col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let productImage of productImageList; index as i">
+                <th scope="row">{{i + 1}}</th>
+                <td>
+                    <img src="{{productImage.url}}" alt="Product Image" width="50" height="50">
+                </td>
+                <td>{{productImage.product.name}}</td>
+                <td>
+                    <input type="checkbox" [checked]="productImage.isMain" value="{{productImage.isMain}}" readonly>
+                </td>
+                <td>
+                  <button type="button" class="btn btn-danger" (click)="deleteProductImage(productImage.id)">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
     </div>
 </div>
